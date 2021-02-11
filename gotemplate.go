@@ -1,9 +1,12 @@
 package main
 
-import "text/template"
-import "encoding/json"
-import "os"
-import "log"
+import (
+	"encoding/json"
+	"log"
+	"os"
+	"text/template"
+)
+
 //import "fmt"
 
 func main() {
@@ -15,7 +18,7 @@ func main() {
 	defer f.Close()
 	var data interface{}
 	err = json.NewDecoder(f).Decode(&data)
-	tmpl := template.Must(template.ParseFiles("./sample.template"))
+	tmpl := template.Must(template.ParseFiles("sample.template"))
 	err = tmpl.Execute(os.Stdout, data)
 	if err != nil {
 		log.Fatal(err)
