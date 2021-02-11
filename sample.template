@@ -1,2 +1,2 @@
-<p>Date = {{.date}}</p>
-<p>Time = {{.time}}</p>
+<p>Date = {{.Date}}</p>
+<p>Time = {{.Time}}</p>

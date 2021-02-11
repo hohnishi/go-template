@@ -4,7 +4,7 @@ import "text/template"
 import "encoding/json"
 import "os"
 import "log"
-import "fmt"
+//import "fmt"
 
 func main() {
 	fname := "sample.json"
@@ -13,18 +13,11 @@ func main() {
 		log.Fatal(err)
 	}
 	defer f.Close()
-	dec := json.NewDecoder(f)
-//	var data interface{}
-//	err = dec.Decode(&data)
-	var data map[string]interface{}
-//	vat data []interface{}
-	err := json.Unmarshal([]byte(), &data)
+	var data interface{}
+	err = json.NewDecoder(f).Decode(&data)
+	tmpl := template.Must(template.ParseFiles("./sample.template"))
+	err = tmpl.Execute(os.Stdout, data)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	tmpl := template.Must(template.New("tmpl").ParseFiles("sample.template"))
-	tmpl.Execute(os.Stdout, data)
-
-
 }
