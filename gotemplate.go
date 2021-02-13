@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-var jsonfile, outfile string
+var jsonfile, outfile, templatefile string
 
 func main() {
 	flag.StringVar(&jsonfile, "j", "", "json filename")
@@ -16,12 +16,17 @@ func main() {
 	flag.StringVar(&outfile, "o", "", "output filename")
 	flag.StringVar(&outfile, "outfile", "", "output filename")
 	flag.Parse()
+	templatefile = flag.Arg(0)
+	if templatefile == "" {
+		templatefile = "sample.template"
+	}
 	os.Exit(Run(os.Args))
 }
 
 func Run(args []string) int {
 	//	fmt.Printf("outfile: %s\n", outfile)
 	//	fmt.Printf("jsonfile: %s\n", jsonfile)
+	//	fmt.Printf("templatefile: %s\n", templatefile)
 
 	var err error
 	o := os.Stdout
@@ -41,9 +46,13 @@ func Run(args []string) int {
 		}
 		defer f.Close()
 	}
+
 	var data interface{}
 	err = json.NewDecoder(f).Decode(&data)
-	tmpl := template.Must(template.ParseFiles("sample.template"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	tmpl := template.Must(template.ParseFiles(templatefile))
 	err = tmpl.Execute(o, data)
 	if err != nil {
 		log.Fatal(err)
