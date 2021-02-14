@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"text/template"
@@ -10,11 +11,16 @@ import (
 
 var jsonfile, outfile, templatefile string
 
+func usage() {
+	fmt.Fprintf(os.Stderr, "usage: %s [-j jsonfile] [-o outfile] templatefile\n", os.Args[0])
+	flag.PrintDefaults()
+	os.Exit(2)
+}
+
 func main() {
+	flag.Usage = usage
 	flag.StringVar(&jsonfile, "j", "", "json filename")
-	flag.StringVar(&jsonfile, "json", "", "json filename")
 	flag.StringVar(&outfile, "o", "", "output filename")
-	flag.StringVar(&outfile, "outfile", "", "output filename")
 	flag.Parse()
 	templatefile = flag.Arg(0)
 	if templatefile == "" {
