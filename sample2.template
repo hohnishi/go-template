@@ -1,2 +1,6 @@
-<>Date = {{.Date}}</>
-<>Time = {{.Time}}</>
+{{ define "sample2" }}
+//sample2.template
+<p>Date = {{.Date}}</p>
+<p>Time = {{.Time}}</p>
+//sample2.template
+{{ end }}
