@@ -1,3 +1,0 @@
-<p>Date = {{.Date}}</p>
-<p>Time = {{.Time}}</p>
-{{- template "sample2" . -}}
