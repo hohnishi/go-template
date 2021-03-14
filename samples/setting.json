@@ -1,0 +1,19 @@
+{
+  "db1": {
+    "dbf": {
+      "f1": "SYSTEM,/pasth/to/system.dbf,1G",
+      "f2": "SYSAUX,/pasth/to/sysaux.dbf,8G",
+      "f3": "USER,/pasth/to/user.dbf,10G"
+    },
+    "lang": "JA",
+    "param": {
+      "p1": "memory_target,1024M",
+      "p2": "sga_target,1024M",
+      "p3": "buffer,1024M"
+    },
+    "sid": "R12C",
+    "ststempwd": "manager",
+    "syspwd": "manager"
+  },
+  "instuser": "oracle"
+}

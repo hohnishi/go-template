@@ -1,0 +1,11 @@
+db1.sid:        R12C
+db1.lang:       JA
+db1.syspwd:     manager
+db1.ststempwd:  manager
+db1.param.p1: memory_target,1024M
+db1.param.p2: sga_target,1024M
+db1.param.p3: buffer,1024M
+db1.dbf.f1:        SYSTEM,/pasth/to/system.dbf,1G
+db1.dbf.f2:        SYSAUX,/pasth/to/sysaux.dbf,8G
+db1.dbf.f3:        USER,/pasth/to/user.dbf,10G
+instuser:	oracle

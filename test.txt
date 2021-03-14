@@ -1,0 +1,86 @@
+
+ohnishi@LAPTOP-07528P15:/mnt/c/Users/Hajim/Documents/GitHub/go-template$ cat test.csv
+db1.sid:        R12C
+db1.lang:       JA
+db1.syspwd:     manager
+db1.ststempwd:  manager
+db1.param.memory_target:        1024M
+db1.param.sga_target:        1024M
+db1.param.buffer:        1024M
+db1.dbf.f1:        SYSTEM,/pasth/to/system.dbf,1G
+db1.dbf.f2:        SYSAUX,/pasth/to/sysaux.dbf,8G
+db1.dbf.f3:        USER,/pasth/to/user.dbf,10G
+instuser:	oracle
+ohnishi@LAPTOP-07528P15:/mnt/c/Users/Hajim/Documents/GitHub/go-template$ cat test.csv| sed s/:"\s"*/=/g
+db1.sid=R12C
+db1.lang=JA
+db1.syspwd=manager
+db1.ststempwd=manager
+db1.param.memory_target=1024M
+db1.param.sga_target=1024M
+db1.param.buffer=1024M
+db1.dbf.f1=SYSTEM,/pasth/to/system.dbf,1G
+db1.dbf.f2=SYSAUX,/pasth/to/sysaux.dbf,8G
+db1.dbf.f3=USER,/pasth/to/user.dbf,10G
+instuser=oracle
+5 ohnishi@LAPTOP-07528P15:/mnt/c/Users/Hajim/Documents/GitHub/go-template$ cat test.csv| sed s/:"\s"*/=/g | jo -p 
+{
+   "db1.sid": "R12C",
+   "db1.lang": "JA",
+   "db1.syspwd": "manager",
+   "db1.ststempwd": "manager",
+   "db1.param.memory_target": "1024M",
+   "db1.param.sga_target": "1024M",
+   "db1.param.buffer": "1024M",
+   "db1.dbf.f1": "SYSTEM,/pasth/to/system.dbf,1G",
+   "db1.dbf.f2": "SYSAUX,/pasth/to/sysaux.dbf,8G",
+   "db1.dbf.f3": "USER,/pasth/to/user.dbf,10G",
+   "instuser": "oracle"
+}
+ohnishi@LAPTOP-07528P15:/mnt/c/Users/Hajim/Documents/GitHub/go-template$ cat test.csv| sed s/:"\s"*/=/g | jo -p | gron
+json = {};
+json.instuser = "oracle";
+json["db1.dbf.f1"] = "SYSTEM,/pasth/to/system.dbf,1G";
+json["db1.dbf.f2"] = "SYSAUX,/pasth/to/sysaux.dbf,8G";
+json["db1.dbf.f3"] = "USER,/pasth/to/user.dbf,10G";
+json["db1.lang"] = "JA";
+json["db1.param.buffer"] = "1024M";
+json["db1.param.memory_target"] = "1024M";
+json["db1.param.sga_target"] = "1024M";
+json["db1.sid"] = "R12C";
+json["db1.ststempwd"] = "manager";
+json["db1.syspwd"] = "manager";
+2 ohnishi@LAPTOP-07528P15:/mnt/c/Users/Hajim/Documents/GitHub/go-template$ cat test.csv| sed s/:"\s"*/=/g | jo -p | gron | sed 's/\[\"/\./g' | sed 's/\"\]//g'
+json = {};
+json.instuser = "oracle";
+json.db1.dbf.f1 = "SYSTEM,/pasth/to/system.dbf,1G";
+json.db1.dbf.f2 = "SYSAUX,/pasth/to/sysaux.dbf,8G";
+json.db1.dbf.f3 = "USER,/pasth/to/user.dbf,10G";
+json.db1.lang = "JA";
+json.db1.param.buffer = "1024M";
+json.db1.param.memory_target = "1024M";
+json.db1.param.sga_target = "1024M";
+json.db1.sid = "R12C";
+json.db1.ststempwd = "manager";
+json.db1.syspwd = "manager";
+ohnishi@LAPTOP-07528P15:/mnt/c/Users/Hajim/Documents/GitHub/go-template$ cat test.csv| sed s/:"\s"*/=/g | jo -p | gron | sed 's/\[\"/\./g' | sed 's/\"\]//g' |gron -u
+{
+  "db1": {
+    "dbf": {
+      "f1": "SYSTEM,/pasth/to/system.dbf,1G",
+      "f2": "SYSAUX,/pasth/to/sysaux.dbf,8G",
+      "f3": "USER,/pasth/to/user.dbf,10G"
+    },
+    "lang": "JA",
+    "param": {
+      "buffer": "1024M",
+      "memory_target": "1024M",
+      "sga_target": "1024M"
+    },
+    "sid": "R12C",
+    "ststempwd": "manager",
+    "syspwd": "manager"
+  },
+  "instuser": "oracle"
+}
+ohnishi@LAPTOP-07528P15:/mnt/c/Users/Hajim/Documents/GitHub/go-template$ 

@@ -1,0 +1,4 @@
+cat test.csv | sed s/:"\s"*/=/g | jo -p | gron | sed 's/\[\"/\./g; s/\"\]//g' |gron -u |jq .
+cat test.csv | sed s/:"\s"*/=/g | jo -p | gron | sed 's/\[\"/\./g; s/\"\]//g' |gron -u
+cat test.csv | sed s/:"\s"*/=/g | tee test.1 | jo -p | tee test.2 | gron | tee test.3 | sed 's/\[\"/\./g; s/\"\]//g' | tee test.4 | gron -u | tee test.5 | jq . | tee test.6 
+cat test.csv | sed s/:"\s"*/=/g | tee test.1 | jo -p | tee test.2 | gron | tee test.3 | sed 's/\[\"/\./g; s/\"\]//g' | tee test.4 | gron -u | tee test.5
