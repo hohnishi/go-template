@@ -1,6 +1,0 @@
-{{template "common_vars" .}}
-{{define "common_vars" -}}
-{{$ob := .ORACLE_BASE -}}
-{{$oh := .ORACLE_HOME -}}
-{{$oradim := print $oh "\\bin\\oradim.exe" -}}
-{{end}}

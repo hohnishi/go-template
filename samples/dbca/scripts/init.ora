@@ -1,0 +1,62 @@
+##############################################################################
+# Copyright (c) 1991, 2013 by Oracle Corporation
+##############################################################################
+ 
+###########################################
+# NLS
+###########################################
+nls_language="JAPANESE"
+nls_territory="JAPAN"
+ 
+###########################################
+# Miscellaneous
+###########################################
+compatible=19.0.0
+diagnostic_dest=C:\app\Administrator
+enable_pluggable_database=true
+memory_target=1638m
+ 
+###########################################
+# Cursors and Library Cache
+###########################################
+open_cursors=300
+ 
+###########################################
+# Cache and I/O
+###########################################
+db_block_size=8192
+ 
+###########################################
+# System Managed Undo and Rollback Segments
+###########################################
+undo_tablespace=UNDOTBS1
+ 
+###########################################
+# Security and Auditing
+###########################################
+audit_file_dest="C:\app\Administrator\admin\orcl\adump"
+audit_trail=db
+remote_login_passwordfile=EXCLUSIVE
+ 
+###########################################
+# Database Identification
+###########################################
+db_domain="world"
+db_name="orcl"
+ 
+###########################################
+# File Configuration
+###########################################
+control_files=("C:\app\Administrator\oradata\ORCL\control01.ctl", "C:\app\Administrator\oradata\ORCL\control02.ctl")
+ 
+###########################################
+# Processes and Sessions
+###########################################
+processes=320
+ 
+###########################################
+# Shared Server
+###########################################
+dispatchers="(PROTOCOL=TCP) (SERVICE=orclXDB)"
+ 
+ 

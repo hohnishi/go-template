@@ -24,9 +24,12 @@ plug_PLGDB.sql
 postDBCreation.sql
 postPDBCreation_PLGDB.sql
 "
+
+mkdir -p ${DESTDIR}
+
 for f in ${files}; do
     echo $f;
-    ${GOTEMPLATE} -j param.json  "${TMPLDIR}/${f}" "${TMPLDIR}/TempleateVars.tmpl" > "${DESTDIR}/${f}"
+    ${GOTEMPLATE} -j param.json  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" > "${DESTDIR}/${f}"
 done
 
 diff -ur ${ORIGDIR} ${DESTDIR}

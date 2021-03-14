@@ -1,0 +1,27 @@
+{{/* ================ */ -}}
+{{define "system_tbs" -}}
+DATAFILE '{{.Fpath}}{{.Ps}}{{.Fname}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
+EXTENT MANAGEMENT LOCAL
+{{end -}}
+{{/* ================ */ -}}
+{{define "sysaux_tbs" -}}
+SYSAUX
+  DATAFILE '{{.Fpath}}{{.Ps}}{{.Fname}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "temp_tbs" -}}
+SMALLFILE DEFAULT TEMPORARY TABLESPACE {{.Tbsname}}
+  TEMPFILE '{{.Fpath}}{{.Ps}}{{.Fname}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "undo_tbs" -}}
+SMALLFILE UNDO TABLESPACE "{{.Tbsname}}"
+  DATAFILE  '{{.Fpath}}{{.Ps}}{{.Fname}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "user_tbs" -}}
+CREATE SMALLFILE TABLESPACE "{{.Tbsname}}" LOGGING
+  DATAFILE  '{{.Fpath}}{{.Ps}}{{.Fname}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
+  EXTENT MANAGEMENT LOCAL  SEGMENT SPACE MANAGEMENT  AUTO;
+{{end -}}
+{{/* ================ */ -}}
