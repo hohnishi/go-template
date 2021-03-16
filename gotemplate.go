@@ -10,10 +10,10 @@ import (
 )
 
 var jsonfile, outfile string
-var templatefiles []string
+var tmplfiles []string
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: %s [-j jsonfile] [-o outfile] templatefiles..\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "usage: %s [-j jsonfile] [-o outfile] <template files>..\n", os.Args[0])
 	flag.PrintDefaults()
 	os.Exit(2)
 }
@@ -23,8 +23,8 @@ func main() {
 	flag.StringVar(&jsonfile, "j", "", "json filename")
 	flag.StringVar(&outfile, "o", "", "output filename")
 	flag.Parse()
-	templatefiles = flag.Args()
-	if len(templatefiles) == 0 {
+	tmplfiles = flag.Args()
+	if len(tmplfiles) == 0 {
 		log.Fatal("no template files")
 	}
 	os.Exit(Run(os.Args))
@@ -33,7 +33,7 @@ func main() {
 func Run(args []string) int {
 	//	fmt.Printf("outfile: %s\n", outfile)
 	//	fmt.Printf("jsonfile: %s\n", jsonfile)
-	//	fmt.Println(templatefiles)
+	//	fmt.Println(tmplfiles)
 
 	var err error
 	o := os.Stdout
@@ -59,7 +59,7 @@ func Run(args []string) int {
 	if err != nil {
 		log.Fatal(err)
 	}
-	tmpl := template.Must(template.ParseFiles(templatefiles...))
+	tmpl := template.Must(template.ParseFiles(tmplfiles...))
 	err = tmpl.Execute(o, data)
 	if err != nil {
 		log.Fatal(err)

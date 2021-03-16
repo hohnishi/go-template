@@ -81,5 +81,37 @@
 	"Autoextend": "ON",
 	"Next": "1280K",
 	"Maxsize": "UNLIMITED"
+    },
+    "Tbs": {
+	"e1": {
+	    "Ps": "\\",
+	    "Tbsname": "USERS",
+	    "Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
+	    "Fname": "users01.dbf",
+	    "Size": "5M",
+	    "Autoextend": "ON",
+	    "Next": "1280K",
+	    "Maxsize": "UNLIMITED"
+	},
+	"e2": {
+	    "Ps": "\\",
+	    "Tbsname": "USERS",
+	    "Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
+	    "Fname": "users02.dbf",
+	    "Size": "5M",
+	    "Autoextend": "ON",
+	    "Next": "1280K",
+	    "Maxsize": "UNLIMITED"
+	},
+	"e3": {
+	    "Ps": "\\",
+	    "Tbsname": "USERS",
+	    "Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
+	    "Fname": "users03.dbf",
+	    "Size": "5M",
+	    "Autoextend": "ON",
+	    "Next": "1280K",
+	    "Maxsize": "UNLIMITED"
+	}
     }
 }
