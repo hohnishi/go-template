@@ -25,8 +25,9 @@
     "DB_DOMAIN": "world",
     "PROCESSES": "320",
     "SYSTEM": {
-	"Ps": "\\",
-	"Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
+	"Type": "system",
+	"Tbsname": "SYSTEM",
+	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\system01.dbf",
 	"Fname": "system01.dbf",
 	"Size": "700M",
 	"Autoextend": "ON",
@@ -34,8 +35,9 @@
 	"Maxsize": "UNLIMITED"
     },
     "SYSAUX": {
-	"Ps": "\\",
-	"Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
+	"Type": "sysaux",
+	"Tbsname": "SYSAUX",
+	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux01.dbf",
 	"Fname": "sysaux01.dbf",
 	"Size": "550M",
 	"Autoextend": "ON",
@@ -43,9 +45,9 @@
 	"Maxsize": "UNLIMITED"
     },
     "TEMP": {
-	"Ps": "\\",
+	"Type": "temp",
 	"Tbsname": "TEMP",
-	"Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
+	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\temp01.dbf",
 	"Fname": "temp01.dbf",
 	"Size": "20M",
 	"Autoextend": "ON",
@@ -53,9 +55,9 @@
 	"Maxsize": "UNLIMITED"
     },
     "UNDO": {
-	"Ps": "\\",
+	"Type": "undo",
 	"Tbsname": "UNDOTBS1",
-	"Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
+	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
 	"Fname": "undotbs01.dbf",
 	"Size": "200M",
 	"Autoextend": "ON",
@@ -63,51 +65,46 @@
 	"Maxsize": "UNLIMITED"
     },
     "Tbs": {
-	"Ps": "\\",
+	"Type": "user",
 	"Tbsname": "USERS",
-	"Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
-	"Fname": "users01.dbf",
+	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
 	"Size": "5M",
 	"Autoextend": "ON",
 	"Next": "1280K",
 	"Maxsize": "UNLIMITED"
     },
     "PdbTbs": {
-	"Ps": "\\",
+	"Type": "user",
 	"Tbsname": "USERS",
-	"Fpath": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB",
-	"Fname": "users01.dbf",
+	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
 	"Size": "5M",
 	"Autoextend": "ON",
 	"Next": "1280K",
 	"Maxsize": "UNLIMITED"
     },
-    "Tbs": {
+    "Tbss": {
 	"e1": {
-	    "Ps": "\\",
+	    "Type": "user",
 	    "Tbsname": "USERS",
-	    "Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
-	    "Fname": "users01.dbf",
+	    "Path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
 	    "Size": "5M",
 	    "Autoextend": "ON",
 	    "Next": "1280K",
 	    "Maxsize": "UNLIMITED"
 	},
 	"e2": {
-	    "Ps": "\\",
+	    "Type": "user",
 	    "Tbsname": "USERS",
-	    "Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
-	    "Fname": "users02.dbf",
+	    "Path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
 	    "Size": "5M",
 	    "Autoextend": "ON",
 	    "Next": "1280K",
 	    "Maxsize": "UNLIMITED"
 	},
 	"e3": {
-	    "Ps": "\\",
+	    "Type": "user",
 	    "Tbsname": "USERS",
-	    "Fpath": "C:\\app\\Administrator\\oradata\\ORCL",
-	    "Fname": "users03.dbf",
+	    "Path": "C:\\app\\Administrator\\oradata\\ORCL\\users03.dbf",
 	    "Size": "5M",
 	    "Autoextend": "ON",
 	    "Next": "1280K",

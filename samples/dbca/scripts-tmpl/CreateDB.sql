@@ -23,9 +23,9 @@ USER SYS IDENTIFIED BY "&&sysPassword"
 USER SYSTEM IDENTIFIED BY "&&systemPassword"
 enable pluggable database
 seed file_name_convert=(
-  '{{.DB_BASE}}\{{.SYSTEM.Fname}}','{{.SEED_BASE}}\{{.SYSTEM.Fname}}',
-  '{{.DB_BASE}}\{{.SYSAUX.Fname}}','{{.SEED_BASE}}\{{.SYSAUX.Fname}}',
-  '{{.DB_BASE}}\{{.TEMP.Fname}}','{{.SEED_BASE}}\{{.TEMP.Fname}}',
-  '{{.DB_BASE}}\{{.UNDO.Fname}}','{{.SEED_BASE}}\{{.UNDO.Fname}}'
+  '{{.SYSTEM.Path}}','{{.SEED_BASE}}\{{.SYSTEM.Fname}}',
+  '{{.SYSAUX.Path}}','{{.SEED_BASE}}\{{.SYSAUX.Fname}}',
+  '{{.TEMP.Path}}','{{.SEED_BASE}}\{{.TEMP.Fname}}',
+  '{{.UNDO.Path}}','{{.SEED_BASE}}\{{.UNDO.Fname}}'
   ) LOCAL UNDO ON;
 spool off

@@ -33,4 +33,7 @@ for f in ${files}; do
 done
 
 diff -ur ${ORIGDIR} ${DESTDIR}
-
+rc=$?
+if [ $rc = 0 ]; then
+    echo "** Done! **"
+fi
