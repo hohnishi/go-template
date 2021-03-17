@@ -65,7 +65,8 @@
 	"Maxsize": "UNLIMITED"
     },
     "Tbs": {
-	"Type": "user",
+	"Type": "perm",
+	"Filetype": "small",
 	"Tbsname": "USERS",
 	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
 	"Size": "5M",
@@ -75,6 +76,7 @@
     },
     "PdbTbs": {
 	"Type": "user",
+	"Filetype": "small",
 	"Tbsname": "USERS",
 	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
 	"Size": "5M",

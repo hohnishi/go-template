@@ -19,19 +19,27 @@ SMALLFILE UNDO TABLESPACE "{{.Tbsname}}"
   DATAFILE  '{{.Path}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
 {{end -}}
 {{/* ================ */ -}}
-{{define "user_tbs" -}}
-CREATE SMALLFILE TABLESPACE "{{.Tbsname}}" LOGGING
-  DATAFILE  '{{.Path}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
+{{define "create_tablespace" -}}
+  {{- if or (eq .Type "perm") (eq .Type "user") -}}
+    {{- template "create_perm_tbs" . -}}
+  {{- else if eq .Type "temp" -}}
+{{/*    {{- template "create_temp_tbs" . -}} */ -}}
+  {{- else if eq .Type "undo" -}}
+{{/*    {{- template "create_undo_tbs" . -}} */ -}}
+  {{- end -}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "create_perm_tbs" -}}
+CREATE {{template "tbs_filetype" . -}} TABLESPACE "{{.Tbsname}}" LOGGING
+  DATAFILE '{{.Path}}' SIZE {{.Size}} REUSE {{template "tbs_autoextend" . }}
   EXTENT MANAGEMENT LOCAL  SEGMENT SPACE MANAGEMENT  AUTO;
 {{end -}}
 {{/* ================ */ -}}
-{{define "tbs_common" -}}
-  {{- if eq .Type "user" -}}
-    {{- template "user_tbs" . -}}
-  {{- else if eq .Type "temp" -}}
-    {{- template "temp_tbs" . -}}
-  {{- else if eq .Type "undo" -}}
-    {{- template "undo_tbs" . -}}
-  {{- end -}}
+{{define "tbs_filetype" -}}
+{{with .Filetype -}} {{if eq . "big" -}} BIGFILE {{else if eq . "small" -}} SMALLFILE {{else -}} "*err" {{end -}} {{end -}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "tbs_autoextend" -}}
+AUTOEXTEND {{if eq .Autoextend "ON" -}} ON NEXT {{.Next}} MAXSIZE {{.Maxsize -}} {{else if eq .Autoextend "OFF" -}} OFF {{else -}} "*err" {{end -}}
 {{end -}}
 {{/* ================ */ -}}
