@@ -53,7 +53,8 @@
 	"Size": "20M",
 	"Autoextend": "ON",
 	"Next": "640K",
-	"Maxsize": "UNLIMITED"
+	"Maxsize": "UNLIMITED",
+	"Uniformsize": "1M"
     },
     "UNDO": {
 	"Type": "undo",
@@ -70,6 +71,9 @@
 	"Type": "perm",
 	"Filetype": "small",
 	"Tbsname": "USERS",
+	"Uniformsize": "1M",
+	"Blocksize": "16K",
+	"SegmentSpaceMgt": "AUTO",
 	"Dbfs": [
 	    {
 		"Path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",

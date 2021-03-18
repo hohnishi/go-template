@@ -1,19 +1,41 @@
-{{/* ================ */ -}}
+{{/* ================================================ */ -}}
 {{define "create_tablespace" -}}
+CREATE {{template "tbs_filetype" . -}}
   {{- if or (eq .Type "perm") (eq .Type "user") -}}
-    {{- template "create_perm_tbs" . -}}
+    {{- template "perm_tbs_clause" . -}}
   {{- else if eq .Type "temp" -}}
-{{/*    {{- template "create_temp_tbs" . -}} */ -}}
+    {{- template "temp_tbs_clause" . -}}
   {{- else if eq .Type "undo" -}}
-{{/*    {{- template "create_undo_tbs" . -}} */ -}}
+    {{- template "undo_tbs_clause" . -}}
   {{- end -}}
+;
 {{end -}}
 {{/* ================ */ -}}
-{{define "create_perm_tbs" -}}
-CREATE {{template "tbs_filetype" . -}} TABLESPACE "{{.Tbsname}}" LOGGING
+{{define "perm_tbs_clause" -}}
+TABLESPACE "{{.Tbsname}}" LOGGING
   DATAFILE {{template "dataf_tempf_specs" .Dbfs }}
-  EXTENT MANAGEMENT LOCAL  SEGMENT SPACE MANAGEMENT  AUTO;
+  {{template "extent_management_clause" . -}}
+  {{- with .Blocksize -}} BLOCKSIZE {{.}} {{end -}}
+  {{template "tbs_encryption_clause" . -}}
+  SEGMENT SPACE MANAGEMENT {{with .SegmentSpaceMgt -}} {{.}} {{else -}} AUTO {{- end -}}
+{{- end -}}
+{{/* ================ */ -}}
+{{define "temp_tbs_clause" -}}
+TEMPORARY TABLESPACE "{{.Tbsname}}"
+  TEMPFILE {{template "dataf_tempf_specs" .Dbfs }}
+  {{template "extent_management_clause" . -}}
+  {{template "tbs_encryption_clause" . -}}
 {{end -}}
+{{/* ================ */ -}}
+{{define "undo_tbs_clause" -}}
+{{end -}}
+{{/* ================================================ */ -}}
+{{define "extent_management_clause" -}}
+EXTENT MANAGEMENT LOCAL {{with .Uniformsize -}} UNIFORM SIZE {{.}} {{end -}}
+{{- end -}}
+{{/* ================ */ -}}
+{{define "tbs_encryption_clause" -}}
+{{- end -}}
 {{/* ================ */ -}}
 {{define "tbs_filetype" -}}
 {{with .Filetype -}} {{if eq . "big" -}} BIGFILE {{else if eq . "small" -}} SMALLFILE {{else -}} "*err" {{end -}} {{end -}}
