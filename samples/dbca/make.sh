@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 GOTEMPLATE=../../gotemplate
 TMPLDIR=scripts-tmpl
@@ -27,9 +27,12 @@ postPDBCreation_PLGDB.sql
 
 mkdir -p ${DESTDIR}
 
+param="param.json"
+[ $# -ne 0 ] && param="$1"
+
 for f in ${files}; do
     echo $f;
-    ${GOTEMPLATE} -j param.json  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" > "${DESTDIR}/${f}"
+    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" > "${DESTDIR}/${f}"
 done
 
 diff -ur ${ORIGDIR} ${DESTDIR}

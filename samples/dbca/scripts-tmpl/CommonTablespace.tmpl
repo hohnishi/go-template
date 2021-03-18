@@ -1,24 +1,4 @@
 {{/* ================ */ -}}
-{{define "system_tbs" -}}
-DATAFILE '{{.Path}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
-EXTENT MANAGEMENT LOCAL
-{{end -}}
-{{/* ================ */ -}}
-{{define "sysaux_tbs" -}}
-SYSAUX
-  DATAFILE '{{.Path}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
-{{end -}}
-{{/* ================ */ -}}
-{{define "temp_tbs" -}}
-SMALLFILE DEFAULT TEMPORARY TABLESPACE {{.Tbsname}}
-  TEMPFILE '{{.Path}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
-{{end -}}
-{{/* ================ */ -}}
-{{define "undo_tbs" -}}
-SMALLFILE UNDO TABLESPACE "{{.Tbsname}}"
-  DATAFILE  '{{.Path}}' SIZE {{.Size}} REUSE AUTOEXTEND {{.Autoextend}} NEXT  {{.Next}} MAXSIZE {{.Maxsize}}
-{{end -}}
-{{/* ================ */ -}}
 {{define "create_tablespace" -}}
   {{- if or (eq .Type "perm") (eq .Type "user") -}}
     {{- template "create_perm_tbs" . -}}
@@ -31,7 +11,7 @@ SMALLFILE UNDO TABLESPACE "{{.Tbsname}}"
 {{/* ================ */ -}}
 {{define "create_perm_tbs" -}}
 CREATE {{template "tbs_filetype" . -}} TABLESPACE "{{.Tbsname}}" LOGGING
-  DATAFILE '{{.Path}}' SIZE {{.Size}} REUSE {{template "tbs_autoextend" . }}
+  DATAFILE {{template "dataf_tempf_specs" .Dbfs }}
   EXTENT MANAGEMENT LOCAL  SEGMENT SPACE MANAGEMENT  AUTO;
 {{end -}}
 {{/* ================ */ -}}
@@ -39,7 +19,21 @@ CREATE {{template "tbs_filetype" . -}} TABLESPACE "{{.Tbsname}}" LOGGING
 {{with .Filetype -}} {{if eq . "big" -}} BIGFILE {{else if eq . "small" -}} SMALLFILE {{else -}} "*err" {{end -}} {{end -}}
 {{end -}}
 {{/* ================ */ -}}
-{{define "tbs_autoextend" -}}
-AUTOEXTEND {{if eq .Autoextend "ON" -}} ON NEXT {{.Next}} MAXSIZE {{.Maxsize -}} {{else if eq .Autoextend "OFF" -}} OFF {{else -}} "*err" {{end -}}
+{{define "dataf_tempf_spec" -}}
+'{{.Path}}' SIZE {{.Size}} REUSE {{template "autoextend_clause" . -}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "dataf_tempf_specs" -}}
+{{range . -}}
+'{{.Path}}' SIZE {{.Size}} REUSE {{template "autoextend_clause" . }}
+{{end -}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "autoextend_clause" -}}
+AUTOEXTEND {{if eq .Autoextend "ON" -}} ON NEXT {{.Next}} {{template "maxsize_clause" . -}} {{else if eq .Autoextend "OFF" -}} OFF {{else -}} "*err" {{end -}}
+{{end -}}
+{{/* ================ */ -}}
+{{define "maxsize_clause" -}}
+{{with .Maxsize -}} MAXSIZE {{if eq . "UNLIMITED" -}} UNLIMITED {{- else -}} . {{end -}} {{end -}}
 {{end -}}
 {{/* ================ */ -}}

@@ -9,10 +9,14 @@ MAXLOGHISTORY 1
 MAXLOGFILES 16
 MAXLOGMEMBERS 3
 MAXDATAFILES 1024
-{{template "system_tbs" .SYSTEM -}}
-{{template "sysaux_tbs" .SYSAUX -}}
-{{template "temp_tbs" .TEMP -}}
-{{template "undo_tbs" .UNDO -}}
+DATAFILE {{template "dataf_tempf_spec" .SYSTEM }}
+EXTENT MANAGEMENT LOCAL
+SYSAUX
+  DATAFILE {{template "dataf_tempf_spec" .SYSAUX }}
+SMALLFILE DEFAULT TEMPORARY TABLESPACE {{.TEMP.Tbsname}}
+  TEMPFILE {{template "dataf_tempf_spec" .TEMP }}
+SMALLFILE UNDO TABLESPACE "{{.UNDO.Tbsname}}"
+  DATAFILE {{template "dataf_tempf_spec" .UNDO }}
 CHARACTER SET {{.CHARSET}}
 NATIONAL CHARACTER SET {{.NSCHARSET}}
 LOGFILE
