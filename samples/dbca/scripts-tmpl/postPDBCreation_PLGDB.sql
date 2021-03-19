@@ -7,7 +7,7 @@ connect "SYS"/"&&sysPassword" as SYSDBA
 alter session set container={{.PDB_NAME}};
 set echo on
 spool {{.LOG_DIR}}\postPDBCreation.log append
-{{template "create_tablespace" .PdbTbs -}}
+{{template "create_tablespace" .pdbTbs -}}
 ALTER DATABASE DEFAULT TABLESPACE "USERS";
 host {{$datapatch}} -skip_upgrade_check -db {{.SID}} -pdbs {{.PDB_NAME}};
 connect "SYS"/"&&sysPassword" as SYSDBA

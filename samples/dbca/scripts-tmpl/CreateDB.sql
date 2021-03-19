@@ -13,9 +13,9 @@ DATAFILE {{template "dataf_tempf_spec" .SYSTEM }}
 EXTENT MANAGEMENT LOCAL
 SYSAUX
   DATAFILE {{template "dataf_tempf_spec" .SYSAUX }}
-SMALLFILE DEFAULT TEMPORARY TABLESPACE {{.TEMP.Tbsname}}
+SMALLFILE DEFAULT TEMPORARY TABLESPACE {{.TEMP.tbsname}}
   TEMPFILE {{template "dataf_tempf_spec" .TEMP }}
-SMALLFILE UNDO TABLESPACE "{{.UNDO.Tbsname}}"
+SMALLFILE UNDO TABLESPACE "{{.UNDO.tbsname}}"
   DATAFILE {{template "dataf_tempf_spec" .UNDO }}
 CHARACTER SET {{.CHARSET}}
 NATIONAL CHARACTER SET {{.NSCHARSET}}
@@ -27,9 +27,9 @@ USER SYS IDENTIFIED BY "&&sysPassword"
 USER SYSTEM IDENTIFIED BY "&&systemPassword"
 enable pluggable database
 seed file_name_convert=(
-  '{{.SYSTEM.Path}}','{{.SEED_BASE}}\{{.SYSTEM.Fname}}',
-  '{{.SYSAUX.Path}}','{{.SEED_BASE}}\{{.SYSAUX.Fname}}',
-  '{{.TEMP.Path}}','{{.SEED_BASE}}\{{.TEMP.Fname}}',
-  '{{.UNDO.Path}}','{{.SEED_BASE}}\{{.UNDO.Fname}}'
+  '{{.SYSTEM.path}}','{{.SEED_BASE}}\{{.SYSTEM.fname}}',
+  '{{.SYSAUX.path}}','{{.SEED_BASE}}\{{.SYSAUX.fname}}',
+  '{{.TEMP.path}}','{{.SEED_BASE}}\{{.TEMP.fname}}',
+  '{{.UNDO.path}}','{{.SEED_BASE}}\{{.UNDO.fname}}'
   ) LOCAL UNDO ON;
 spool off

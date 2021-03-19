@@ -1,3 +1,4 @@
+{{with .dbpara -}}
 ##############################################################################
 # Copyright (c) 1991, 2013 by Oracle Corporation
 ##############################################################################
@@ -12,7 +13,7 @@ nls_territory="{{.NLS_TERRITORY}}"
 # Miscellaneous
 ###########################################
 compatible={{.COMPATIBLE}}
-diagnostic_dest={{.ORACLE_BASE}}
+diagnostic_dest={{.DIAGNOSTIC_DEST}}
 enable_pluggable_database={{.ENABLE_PLUGGABLE_DATABASE}}
 memory_target={{.MEMORY_TARGET}}
  
@@ -34,7 +35,7 @@ undo_tablespace={{.UNDO_TABLESPACE}}
 ###########################################
 # Security and Auditing
 ###########################################
-audit_file_dest="{{.ORACLE_BASE}}\admin\{{.SID}}\adump"
+audit_file_dest={{.AUDIT_FILE_DEST}}
 audit_trail={{.AUDIT_TRAIL}}
 remote_login_passwordfile={{.REMOTE_LOGIN_PASSWORDFILE}}
  
@@ -42,12 +43,12 @@ remote_login_passwordfile={{.REMOTE_LOGIN_PASSWORDFILE}}
 # Database Identification
 ###########################################
 db_domain="{{.DB_DOMAIN}}"
-db_name="{{.SID}}"
+db_name="{{.DB_NAME}}"
  
 ###########################################
 # File Configuration
 ###########################################
-control_files=("{{.DB_BASE}}\control01.ctl", "{{.DB_BASE}}\control02.ctl")
+control_files={{.CONTROL_FILES}}
  
 ###########################################
 # Processes and Sessions
@@ -57,6 +58,5 @@ processes={{.PROCESSES}}
 ###########################################
 # Shared Server
 ###########################################
-dispatchers="(PROTOCOL=TCP) (SERVICE={{.SID}}XDB)"
- 
- 
+dispatchers={{.DISPATCHERS}}
+{{end -}}

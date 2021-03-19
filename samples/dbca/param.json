@@ -1,135 +1,142 @@
 {
-    "PS": "\\",
-    "ORACLE_BASE": "C:\\app\\Administrator",
-    "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
-    "SID": "orcl",
-    "SID_U": "ORCL",
-    "CHARSET": "AL32UTF8",
-    "NSCHARSET": "AL16UTF16",
-    "DB_BASE": "C:\\app\\Administrator\\oradata\\ORCL",
-    "SEED_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\pdbseed",
-    "PDB_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB",
-    "PDB_NAME": "PLGDB",
-    "SCRIPT_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
-    "LOG_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
+  "ps": "\\",
+  "ORACLE_BASE": "C:\\app\\Administrator",
+  "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
+  "SID": "orcl",
+  "SID_U": "ORCL",
+  "CHARSET": "AL32UTF8",
+  "NSCHARSET": "AL16UTF16",
+  "DB_BASE": "C:\\app\\Administrator\\oradata\\ORCL",
+  "SEED_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\pdbseed",
+  "PDB_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB",
+  "PDB_NAME": "PLGDB",
+  "SCRIPT_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
+  "LOG_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
+  "dbpara": {
     "NLS_LANGUAGE": "JAPANESE",
     "NLS_TERRITORY": "JAPAN",
     "COMPATIBLE": "19.0.0",
+    "DIAGNOSTIC_DEST": "C:\\app\\Administrator",
     "ENABLE_PLUGGABLE_DATABASE": "true",
     "MEMORY_TARGET": "1638m",
     "OPEN_CURSORS": "300",
     "DB_BLOCK_SIZE": "8192",
     "UNDO_TABLESPACE": "UNDOTBS1",
+    "AUDIT_FILE_DEST": "\"C:\\app\\Administrator\\admin\\orcl\\adump\"",
     "AUDIT_TRAIL": "db",
     "REMOTE_LOGIN_PASSWORDFILE": "EXCLUSIVE",
     "DB_DOMAIN": "world",
+    "DB_NAME": "orcl",
+    "CONTROL_FILES": "(\"C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl\", \"C:\\app\\Administrator\\oradata\\ORCL\\control02.ctl\")",
     "PROCESSES": "320",
-    "SYSTEM": {
-	"Type": "system",
-	"Tbsname": "SYSTEM",
-	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\system01.dbf",
-	"Fname": "system01.dbf",
-	"Size": "700M",
-	"Autoextend": "ON",
-	"Next": "10240K",
-	"Maxsize": "UNLIMITED"
+    "DISPATCHERS": "\"(PROTOCOL=TCP) (SERVICE=orclXDB)\""
+  },
+  "SYSTEM": {
+    "type": "system",
+    "tbsname": "SYSTEM",
+    "path": "C:\\app\\Administrator\\oradata\\ORCL\\system01.dbf",
+    "fname": "system01.dbf",
+    "size": "700M",
+    "autoextend": "ON",
+    "next": "10240K",
+    "maxsize": "UNLIMITED"
+  },
+  "SYSAUX": {
+    "type": "sysaux",
+    "tbsname": "SYSAUX",
+    "path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux01.dbf",
+    "fname": "sysaux01.dbf",
+    "size": "550M",
+    "autoextend": "ON",
+    "next": "10240K",
+    "maxsize": "UNLIMITED"
+  },
+  "TEMP": {
+    "type": "temp",
+    "filetype": "small",
+    "tbsname": "TEMP",
+    "path": "C:\\app\\Administrator\\oradata\\ORCL\\temp01.dbf",
+    "fname": "temp01.dbf",
+    "size": "20M",
+    "autoextend": "ON",
+    "next": "640K",
+    "maxsize": "UNLIMITED",
+    "Uniformsize": "1M"
+  },
+  "UNDO": {
+    "type": "undo",
+    "filetype": "small",
+    "tbsname": "UNDOTBS1",
+    "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
+    "fname": "undotbs01.dbf",
+    "size": "200M",
+    "autoextend": "ON",
+    "next": "5120K",
+    "maxsize": "UNLIMITED"
+  },
+  "tbs": {
+    "type": "perm",
+    "filetype": "small",
+    "tbsname": "USERS",
+    "uniformsize": "1M",
+    "blocksize": "16K",
+    "segmentSpaceMgt": "AUTO",
+    "dbfs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
+        "size": "5M",
+        "autoextend": "ON",
+        "next": "1280K",
+        "maxsize": "UNLIMITED"
+      },
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
+        "size": "5M",
+        "autoextend": "OFF"
+      }
+    ]
+  },
+  "pdbTbs": {
+    "type": "user",
+    "filetype": "small",
+    "tbsname": "USERS",
+    "dbfs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
+        "size": "5M",
+        "autoextend": "ON",
+        "next": "1280K",
+        "maxsize": "UNLIMITED"
+      }
+    ]
+  },
+  "tbss": {
+    "e1": {
+      "type": "user",
+      "tbsname": "USERS",
+      "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
+      "size": "5M",
+      "autoextend": "ON",
+      "next": "1280K",
+      "maxsize": "UNLIMITED"
     },
-    "SYSAUX": {
-	"Type": "sysaux",
-	"Tbsname": "SYSAUX",
-	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux01.dbf",
-	"Fname": "sysaux01.dbf",
-	"Size": "550M",
-	"Autoextend": "ON",
-	"Next": "10240K",
-	"Maxsize": "UNLIMITED"
+    "e2": {
+      "type": "user",
+      "tbsname": "USERS",
+      "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
+      "size": "5M",
+      "autoextend": "ON",
+      "next": "1280K",
+      "maxsize": "UNLIMITED"
     },
-    "TEMP": {
-	"Type": "temp",
-	"Filetype": "small",
-	"Tbsname": "TEMP",
-	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\temp01.dbf",
-	"Fname": "temp01.dbf",
-	"Size": "20M",
-	"Autoextend": "ON",
-	"Next": "640K",
-	"Maxsize": "UNLIMITED",
-	"Uniformsize": "1M"
-    },
-    "UNDO": {
-	"Type": "undo",
-	"Filetype": "small",
-	"Tbsname": "UNDOTBS1",
-	"Path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
-	"Fname": "undotbs01.dbf",
-	"Size": "200M",
-	"Autoextend": "ON",
-	"Next": "5120K",
-	"Maxsize": "UNLIMITED"
-    },
-    "Tbs": {
-	"Type": "perm",
-	"Filetype": "small",
-	"Tbsname": "USERS",
-	"Uniformsize": "1M",
-	"Blocksize": "16K",
-	"SegmentSpaceMgt": "AUTO",
-	"Dbfs": [
-	    {
-		"Path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
-		"Size": "5M",
-		"Autoextend": "ON",
-		"Next": "1280K",
-		"Maxsize": "UNLIMITED"
-	    },
-	    {
-		"Path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
-		"Size": "5M",
-		"Autoextend": "OFF"
-	    }
-	]
-    },
-    "PdbTbs": {
-	"Type": "user",
-	"Filetype": "small",
-	"Tbsname": "USERS",
-	"Dbfs": [
-	    {
-		"Path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
-		"Size": "5M",
-		"Autoextend": "ON",
-		"Next": "1280K",
-		"Maxsize": "UNLIMITED"
-	    }
-	]
-    },
-    "Tbss": {
-	"e1": {
-	    "Type": "user",
-	    "Tbsname": "USERS",
-	    "Path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
-	    "Size": "5M",
-	    "Autoextend": "ON",
-	    "Next": "1280K",
-	    "Maxsize": "UNLIMITED"
-	},
-	"e2": {
-	    "Type": "user",
-	    "Tbsname": "USERS",
-	    "Path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
-	    "Size": "5M",
-	    "Autoextend": "ON",
-	    "Next": "1280K",
-	    "Maxsize": "UNLIMITED"
-	},
-	"e3": {
-	    "Type": "user",
-	    "Tbsname": "USERS",
-	    "Path": "C:\\app\\Administrator\\oradata\\ORCL\\users03.dbf",
-	    "Size": "5M",
-	    "Autoextend": "ON",
-	    "Next": "1280K",
-	    "Maxsize": "UNLIMITED"
-	}
+    "e3": {
+      "type": "user",
+      "tbsname": "USERS",
+      "path": "C:\\app\\Administrator\\oradata\\ORCL\\users03.dbf",
+      "size": "5M",
+      "autoextend": "ON",
+      "next": "1280K",
+      "maxsize": "UNLIMITED"
     }
+  }
 }

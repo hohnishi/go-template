@@ -1,28 +1,28 @@
 {{/* ================================================ */ -}}
 {{define "create_tablespace" -}}
 CREATE {{template "tbs_filetype" . -}}
-  {{- if or (eq .Type "perm") (eq .Type "user") -}}
+  {{- if or (eq .type "perm") (eq .type "user") -}}
     {{- template "perm_tbs_clause" . -}}
-  {{- else if eq .Type "temp" -}}
+  {{- else if eq .type "temp" -}}
     {{- template "temp_tbs_clause" . -}}
-  {{- else if eq .Type "undo" -}}
+  {{- else if eq .type "undo" -}}
     {{- template "undo_tbs_clause" . -}}
   {{- end -}}
 ;
 {{end -}}
 {{/* ================ */ -}}
 {{define "perm_tbs_clause" -}}
-TABLESPACE "{{.Tbsname}}" LOGGING
-  DATAFILE {{template "dataf_tempf_specs" .Dbfs }}
+TABLESPACE "{{.tbsname}}" LOGGING
+  DATAFILE {{template "dataf_tempf_specs" .dbfs -}}
   {{template "extent_management_clause" . -}}
-  {{- with .Blocksize -}} BLOCKSIZE {{.}} {{end -}}
+  {{- with .blocksize -}} BLOCKSIZE {{.}} {{end -}}
   {{template "tbs_encryption_clause" . -}}
-  SEGMENT SPACE MANAGEMENT {{with .SegmentSpaceMgt -}} {{.}} {{else -}} AUTO {{- end -}}
+  SEGMENT SPACE MANAGEMENT {{with .segmentSpaceMgt -}} {{.}} {{else -}} AUTO {{- end -}}
 {{- end -}}
 {{/* ================ */ -}}
 {{define "temp_tbs_clause" -}}
-TEMPORARY TABLESPACE "{{.Tbsname}}"
-  TEMPFILE {{template "dataf_tempf_specs" .Dbfs }}
+TEMPORARY TABLESPACE "{{.tbsname}}"
+  TEMPFILE {{template "dataf_tempf_specs" .dbfs -}}
   {{template "extent_management_clause" . -}}
   {{template "tbs_encryption_clause" . -}}
 {{end -}}
@@ -31,31 +31,31 @@ TEMPORARY TABLESPACE "{{.Tbsname}}"
 {{end -}}
 {{/* ================================================ */ -}}
 {{define "extent_management_clause" -}}
-EXTENT MANAGEMENT LOCAL {{with .Uniformsize -}} UNIFORM SIZE {{.}} {{end -}}
+EXTENT MANAGEMENT LOCAL {{with .uniformsize -}} UNIFORM SIZE {{.}} {{end -}}
 {{- end -}}
 {{/* ================ */ -}}
 {{define "tbs_encryption_clause" -}}
 {{- end -}}
 {{/* ================ */ -}}
 {{define "tbs_filetype" -}}
-{{with .Filetype -}} {{if eq . "big" -}} BIGFILE {{else if eq . "small" -}} SMALLFILE {{else -}} "*err" {{end -}} {{end -}}
+{{with .filetype -}} {{if eq . "big" -}} BIGFILE {{else if eq . "small" -}} SMALLFILE {{else -}} "*err" {{end -}} {{end -}}
 {{end -}}
 {{/* ================ */ -}}
 {{define "dataf_tempf_spec" -}}
-'{{.Path}}' SIZE {{.Size}} REUSE {{template "autoextend_clause" . -}}
+'{{.path}}' SIZE {{.size}} REUSE {{template "autoextend_clause" . -}}
 {{end -}}
 {{/* ================ */ -}}
 {{define "dataf_tempf_specs" -}}
 {{range . -}}
-'{{.Path}}' SIZE {{.Size}} REUSE {{template "autoextend_clause" . }}
+'{{.path}}' SIZE {{.size}} REUSE {{template "autoextend_clause" . }}
 {{end -}}
 {{end -}}
 {{/* ================ */ -}}
 {{define "autoextend_clause" -}}
-AUTOEXTEND {{if eq .Autoextend "ON" -}} ON NEXT {{.Next}} {{template "maxsize_clause" . -}} {{else if eq .Autoextend "OFF" -}} OFF {{else -}} "*err" {{end -}}
+AUTOEXTEND {{if eq .autoextend "ON" -}} ON NEXT {{.next}} {{template "maxsize_clause" . -}} {{else if eq .autoextend "OFF" -}} OFF {{else -}} "*err" {{end -}}
 {{end -}}
 {{/* ================ */ -}}
 {{define "maxsize_clause" -}}
-{{with .Maxsize -}} MAXSIZE {{if eq . "UNLIMITED" -}} UNLIMITED {{- else -}} . {{end -}} {{end -}}
+{{with .maxsize -}} MAXSIZE {{if eq . "UNLIMITED" -}} UNLIMITED {{- else -}} . {{end -}} {{end -}}
 {{end -}}
 {{/* ================ */ -}}

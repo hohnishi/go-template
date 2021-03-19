@@ -58,5 +58,3 @@ processes=320
 # Shared Server
 ###########################################
 dispatchers="(PROTOCOL=TCP) (SERVICE=orclXDB)"
- 
- 
