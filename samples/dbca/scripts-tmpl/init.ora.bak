@@ -1,0 +1,62 @@
+{{with .dbpara -}}
+##############################################################################
+# Copyright (c) 1991, 2013 by Oracle Corporation
+##############################################################################
+ 
+###########################################
+# NLS
+###########################################
+nls_language="{{.nls_language}}"
+nls_territory="{{.nls_territory}}"
+ 
+###########################################
+# Miscellaneous
+###########################################
+compatible={{.compatible}}
+diagnostic_dest={{.diagnostic_dest}}
+enable_pluggable_database={{.enable_pluggable_database}}
+memory_target={{.memory_target}}
+ 
+###########################################
+# Cursors and Library Cache
+###########################################
+open_cursors={{.open_cursors}}
+ 
+###########################################
+# Cache and I/O
+###########################################
+db_block_size={{.db_block_size}}
+ 
+###########################################
+# System Managed Undo and Rollback Segments
+###########################################
+undo_tablespace={{.undo_tablespace}}
+ 
+###########################################
+# Security and Auditing
+###########################################
+audit_file_dest={{.audit_file_dest}}
+audit_trail={{.audit_trail}}
+remote_login_passwordfile={{.remote_login_passwordfile}}
+ 
+###########################################
+# Database Identification
+###########################################
+db_domain="{{.db_domain}}"
+db_name="{{.db_name}}"
+ 
+###########################################
+# File Configuration
+###########################################
+control_files={{.control_files}}
+ 
+###########################################
+# Processes and Sessions
+###########################################
+processes={{.processes}}
+ 
+###########################################
+# Shared Server
+###########################################
+dispatchers={{.dispatchers}}
+{{end -}}
