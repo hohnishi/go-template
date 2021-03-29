@@ -1,14 +1,21 @@
+{{/* optional param */ -}}
+{{$maxinstances  := or .MAXINSTANCES  8 -}}
+{{$maxloghistory := or .MAXLOGHISTORY 1 -}}
+{{$maxlogfiles   := or .MAXLOGFILES   16 -}}
+{{$maxlogmembers := or .MAXLOGMEMBERS 3 -}}
+{{$maxdatafiles  := or .MAXDATAFILES  1024 -}}
+{{/* ================ */ -}}
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
 set echo on
 spool {{.LOG_DIR}}\CreateDB.log append
 startup nomount pfile="{{.SCRIPT_DIR}}\init.ora";
 CREATE DATABASE "{{.SID}}"
-MAXINSTANCES {{.MAXINSTANCES}}
-MAXLOGHISTORY {{.MAXLOGHISTORY}}
-MAXLOGFILES {{.MAXLOGFILES}}
-MAXLOGMEMBERS {{.MAXLOGMEMBERS}}
-MAXDATAFILES {{.MAXDATAFILES}}
+MAXINSTANCES {{$maxinstances}}
+MAXLOGHISTORY {{$maxloghistory}}
+MAXLOGFILES {{$maxlogfiles}}
+MAXLOGMEMBERS {{$maxlogmembers}}
+MAXDATAFILES {{$maxdatafiles}}
 DATAFILE {{template "dataf_tempf_spec" .SYSTEM }}
 EXTENT MANAGEMENT LOCAL
 SYSAUX
