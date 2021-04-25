@@ -1,0 +1,445 @@
+create database::=
+CREATE DATABASE [ database ]
+  {   USER SYS IDENTIFIED BY password
+    | USER SYSTEM IDENTIFIED BY password
+    | CONTROLFILE REUSE
+    | MAXDATAFILES integer
+    | MAXINSTANCES integer
+    | CHARACTER SET charset
+    | NATIONAL CHARACTER SET charset
+    | SET DEFAULT { BIGFILE | SMALLFILE } TABLESPACE
+    | database_logging_clauses
+    | tablespace_clauses
+    | set_time_zone_clause
+    | [ BIGFILE | SMALLFILE ] USER_DATA TABLESPACE tablespace_name
+        DATAFILE datafile_tempfile_spec [, datafile_tempfile_spec ]...
+    | enable_pluggable_database
+  }... ;
+
+database_logging_clauses::=
+{   LOGFILE
+         [ GROUP integer ] file_specification
+      [, [ GROUP integer ] file_specification ]...
+  | MAXLOGFILES integer
+  | MAXLOGMEMBERS integer
+  | MAXLOGHISTORY integer
+  | { ARCHIVELOG | NOARCHIVELOG }
+  | FORCE LOGGING
+  | SET STANDBY NOLOGGING FOR {DATA AVAILABILITY | LOAD PERFORMANCE}
+};
+ 
+tablespace_clauses::=
+{   EXTENT MANAGEMENT LOCAL
+  | DATAFILE        file_specification [, file_specification ]...
+  | SYSAUX DATAFILE file_specification [, file_specification ]...
+  | default_tablespace
+  | default_temp_tablespace
+  | undo_tablespace
+}
+
+default_tablespace::=
+  DEFAULT TABLESPACE tablespace
+    [ DATAFILE datafile_tempfile_spec ]
+    [ extent_management_clause ]
+
+default_temp_tablespace::=
+  [ BIGFILE | SMALLFILE ] DEFAULT
+  {   { TEMPORARY TABLESPACE }
+    | { LOCAL TEMPORARY TABLESPACE FOR { ALL | LEAF } }
+  } tablespace
+  [ TEMPFILE file_specification [, file_specification ]...]
+  [ extent_management_clause ]
+
+undo_tablespace::=
+  [ BIGFILE | SMALLFILE ] UNDO TABLESPACE tablespace
+    [ DATAFILE file_specification [, file_specification ]...]
+
+set_time_zone_clause::=
+  SET TIME_ZONE = '{ { + | - } hh : mi | time_zone_region }'
+   
+enable_pluggable_database::=
+  ENABLE PLUGGABLE DATABASE
+  [ SEED [ file_name_convert ]
+         [ SYSTEM tablespace_datafile_clauses ]
+         [ SYSAUX tablespace_datafile_clauses ]
+  ]
+  [ undo_mode_clause ]
+
+tablespace_datafile_clauses::=
+  DATAFILES { SIZE size_clause | autoextend_clause }...
+
+undo_mode_clause::=
+  LOCAL UNDO { ON | OFF }
+
+
+=========================================================================
+create_tablespace::=
+  CREATE
+    [ BIGFILE | SMALLFILE ]
+    {   permanent_tablespace_clause
+      | temporary_tablespace_clause
+      | undo_tablespace_clause
+    } ;
+
+permanent_tablespace_clause::= 
+  TABLESPACE tablespace
+  [ DATAFILE file_specification [, file_specification ]... ]
+  [ permanent_tablespace_attrs ]
+  [ IN SHARDSPACE shardspace ]
+
+permanent_tablespace_attrs::=
+  {   MINIMUM EXTENT size_clause
+    | BLOCKSIZE integer [ K ]
+    | logging_clause
+    | FORCE LOGGING
+    | tablespace_encryption_clause
+    | default_tablespace_params
+    | { ONLINE | OFFLINE }
+    | extent_management_clause
+    | segment_management_clause
+    | flashback_mode_clause
+  }...
+
+logging_clause::=
+  {   LOGGING
+    | NOLOGGING
+    | FILESYSTEM_LIKE_LOGGING
+  }
+
+tablespace_encryption_clause::=
+  ENCRYPTION [ { [ tablespace_encryption_spec ] ENCRYPT } | DECRYPT ]
+
+tablespace_encryption_spec::=
+  USING 'encrypt_algorithm'
+
+
+default_tablespace_params::=
+  DEFAULT [ default_table_compression ] [ default_index_compression ]
+          [ inmemory_clause ] [ ilm_clause ] [ storage_clause ]
+
+
+default_table_compression::=
+  TABLE {   COMPRESS FOR OLTP
+          | COMPRESS FOR QUERY { LOW | HIGH }
+          | COMPRESS FOR ARCHIVE { LOW | HIGH }
+          | NOCOMPRESS
+  }
+
+default_index_compression::=
+  INDEX {   COMPRESS ADVANCED { LOW | HIGH }
+          | NOCOMPRESS
+  }
+
+inmemory_clause::=
+  INMEMORY [ inmemory_attributes ] | NO INMEMORY
+
+inmemory_attributes::=
+  [ inmemory_memcompress ] [ inmemory_priority ] [ inmemory_distribute ] [ inmemory_duplicate ]
+
+inmemory_memcompress::=
+    MEMCOMPRESS FOR { DML | QUERY [ LOW | HIGH ] | CAPACITY [ LOW | HIGH ] }
+  | NO MEMCOMPRESS
+
+inmemory_priority::=
+  PRIORITY { NONE | LOW | MEDIUM | HIGH | CRITICAL }
+  
+inmemory_distribute::=
+  DISTRIBUTE [ AUTO | BY { ROWID RANGE } ] [ FOR SERVICE { DEFAULT | ALL | service_name | NONE } ]
+	   
+inmemory_duplicate::=
+  DUPLICATE | DUPLICATE ALL | NO DUPLICATE
+
+segment_management_clause::=
+  SEGMENT SPACE MANAGEMENT { AUTO | MANUAL }
+
+flashback_mode_clause::=
+  FLASHBACK { ON | OFF }
+
+undo_tablespace_clause::=
+  UNDO TABLESPACE tablespace
+    [ DATAFILE file_specification [, file_specification ]... ]
+    [ extent_management_clause ]
+    [ tablespace_retention_clause ]
+    [ tablespace_encryption_clause ]
+
+tablespace_retention_clause::=
+  RETENTION { GUARANTEE | NOGUARANTEE }
+
+temporary_tablespace_clause::=
+  {   { TEMPORARY TABLESPACE }
+    | { LOCAL TEMPORARY TABLESPACE FOR { ALL | LEAF } }
+  }
+  tablespace
+  [ TEMPFILE file_specification [, file_specification ]... ]
+  [ tablespace_group_clause ]
+  [ extent_management_clause ]
+
+tablespace_group_clause::=
+  TABLESPACE GROUP { tablespace_group_name | '' }
+
+ilm_clause::=
+  ILM
+    {   ADD POLICY ilm_policy_clause
+      | { DELETE | ENABLE | DISABLE } POLICY ilm_policy_name
+      | DELETE_ALL
+      | ENABLE_ALL
+      | DISABLE_ALL
+    }
+
+ilm_policy_clause::=
+  { ilm_compression_policy | ilm_tiering_policy | ilm_inmemory_policy }
+
+ilm_compression_policy::=
+  { table_compression { SEGMENT | GROUP }
+  {   {   AFTER ilm_time_period OF { { NO ACCESS } | { NO MODIFICATION } | CREATION } }
+        | { ON function_name } }
+      }
+    | { {   ROW STORE COMPRESS ADVANCED
+          | COLUMN STORE COMPRESS FOR QUERY
+	}
+        ROW AFTER ilm_time_period OF NO MODIFICATION
+      }
+	
+ilm_tiering_policy::=
+    { TIER TO tablespace [ SEGMENT | GROUP ] [ ON function_name ] }
+  | { TIER TO tablespace READ ONLY [ SEGMENT | GROUP ]
+      { {   AFTER ilm_time_period OF { { NO ACCESS } | { NO MODIFICATION } | CREATION } }
+          | { ON function_name }
+	}
+      }
+
+ilm_inmemory_policy::=
+  {   SET INMEMORY [ inmemory_attributes ]
+    | MODIFY INMEMORY inmemory_memcompress
+    | NO INMEMORY
+  }
+  [ SEGMENT ]
+  {   AFTER ilm_time_period OF { NO ACCESS | NO MODIFICATION | CREATION }
+    | ON function_name
+  }
+
+ilm_time_period::=
+  integer { { DAY | DAYS } | { MONTH | MONTHS } | { YEAR | YEARS } }
+
+inmemory_attributes::=
+inmemory_memcompress::=
+table_compression::=
+ilm_time_period::=
+function_name::=
+ilm_policy_name::=
+
+=========================================================================
+create_pluggable_database::=
+  CREATE PLUGGABLE DATABASE
+    {   {   pdb_name [ AS APPLICATION CONTAINER ]
+          | using_snapshot_clause
+        }
+      | { AS SEED }
+    }
+    {   create_pdb_from_seed
+      | create_pdb_clone
+      | create_pdb_from_xml
+      | create_pdb_from_mirror_copy
+      | container_map_clause
+    }
+    pdb_snapshot_clause ;
+
+create_pdb_from_seed::=
+   ADMIN USER admin_user_name IDENTIFIED BY password
+   [ pdb_dba_roles ]
+   [ parallel_pdb_creation_clause ]
+   [ default_tablespace ]
+   [ pdb_storage_clause ]
+   [ file_name_convert ]
+   [ service_name_convert ]
+   [ path_prefix_clause ]
+   [ tempfile_reuse_clause ]
+   [ user_tablespaces_clause ]
+   [ standbys_clause ]
+   [ logging_clause ]
+   [ create_file_dest_clause ]
+   [ HOST = 'hostname' ]
+   [ PORT = number ]
+
+pdb_dba_roles::=
+  ROLES = ( role [, role ]... )
+
+parallel_pdb_creation_clause::=
+  PARALLEL [ integer ]
+
+default_tablespace::=
+  DEFAULT TABLESPACE tablespace
+  [ DATAFILE datafile_tempfile_spec ]
+  [ extent_management_clause ]
+
+pdb_storage_clause::=
+  STORAGE
+  {   ( {   MAXSIZE { UNLIMITED | size_clause }
+          | MAX_AUDIT_SIZE { UNLIMITED | size_clause }
+          | MAX_DIAG_SIZE { UNLIMITED | size_clause }
+        }...
+      )
+    |  UNLIMITED
+  }
+
+service_name_convert::=
+  SERVICE_NAME_CONVERT =
+  {   (    'service_name', 'replacement_service_name'
+        [, 'service_name', 'replacement_service_name' ]...
+      )
+    | NONE
+  }
+		  
+path_prefix_clause::=
+  PATH_PREFIX = {   'path_name'
+                  | directory_object_name
+		  | NONE
+		}
+
+tempfile_reuse_clause::=
+  TEMPFILE REUSE
+
+user_tablespaces_clause::=
+
+
+standbys_clause::=
+logging_clause::=
+create_file_dest_clause::=
+
+pdb_name::=
+using_snapshot_clause::=
+create_pdb_clone::=
+create_pdb_from_xml::=
+create_pdb_from_mirror_copy::=
+container_map_clause::=
+pdb_snapshot_clause::=
+
+=========================================================================
+create_spfile::=
+  CREATE SPFILE [= 'spfile_name' ]
+  FROM {   PFILE [= 'pfile_name' ] [ AS COPY ]
+         | MEMORY
+       } ;
+
+=========================================================================
+create_user::=
+
+=========================================================================
+<>共通のSQL DDL句
+
+file_specification::=
+  {   datafile_tempfile_spec
+    | redo_log_file_spec
+  }
+
+datafile_tempfile_spec::=
+  [ 'filename' | 'ASM_filename' ]
+  [ SIZE size_clause ]
+  [ REUSE ]
+  [ autoextend_clause ]
+
+redo_log_file_spec::=
+  [ 'filename | asm_filename'
+    | (  'filename | asm_filename'
+      [, 'filename | asm_filename' ]...
+      )
+  ]
+  [ SIZE size_clause ]
+  [ BLOCKSIZE size_clause
+  [ REUSE ]
+
+
+asm_filename::=
+  {   fully_qualified_file_name
+    | numeric_file_name
+    | incomplete_file_name
+    | alias_file_name
+  }
+
+fully_qualified_file_name::=
+  +diskgroup_name/db_name/file_type/file_type_tag.filenumber.incarnation_number
+
+numeric_file_name::=
+  +diskgroup_name.filenumber.incarnation_number
+
+incomplete_file_name::=
+  +diskgroup_name [ (template_name) ]
+
+alias_file_name::=
+  +diskgroup_name [ (template_name) ] /alias_name
+
+autoextend_clause::=
+  AUTOEXTEND
+   {  OFF
+    | ON [ NEXT size_clause ] [ maxsize_clause ]
+   }
+
+size_clause::=
+  integer [ K | M | G | T | P | E ]
+
+storage_clause::=
+  STORAGE
+  ( {   INITIAL size_clause
+      | NEXT size_clause
+      | MINEXTENTS integer
+      | MAXEXTENTS { integer | UNLIMITED }
+      | maxsize_clause
+      | PCTINCREASE integer
+      | FREELISTS integer
+      | FREELIST GROUPS integer
+      | OPTIMAL [ size_clause | NULL ]
+      | BUFFER_POOL { KEEP | RECYCLE | DEFAULT }
+      | FLASH_CACHE { KEEP | NONE | DEFAULT }
+      | ( CELL_FLASH_CACHE ( KEEP | NONE | DEFAULT ) )
+      | ENCRYPT
+    } ...
+  )
+
+maxsize_clause::=
+  MAXSIZE { UNLIMITED | size_clause }
+
+extent_management_clause::=
+  EXTENT MANAGEMENT LOCAL [ AUTOALLOCATE | UNIFORM [ SIZE size_clause ] ]
+
+file_name_convert::=
+  FILE_NAME_CONVERT =
+  {   (    'filename_pattern', 'replacement_filename_pattern'
+        [, 'filename_pattern', 'replacement_filename_pattern' ]...
+      )
+    | NONE
+  }
+
+database
+・DB_NAME初期化パラメータの値と一致する必要があります。
+・名前の長さは最大8バイトです。
+・ASCII文字のみを指定できます。
+・有効な文字は、英数字、アンダースコア(_)、シャープ記号(#)およびドル記号($)。他の文字は無効です。
+・アルファベットで開始する必要があります。
+・この名前を制御ファイルに書き込みます。
+　データベース名を明示的に指定するALTER DATABASE文を発行すると、
+　制御ファイル内の名前に基づいて、そのデータベース名が検証されます。
+・大文字と小文字が区別されず、大文字のASCII文字で保存されます。
+・データベース名を引用識別子として指定した場合、引用符は特に警告もなく無視されます。
+・CREATE DATABASE文でデータベース名を指定しない場合、DB_NAME初期化パラメータで指定した名前が採用
+・DB_NAME初期化パラメータは、データベースの初期化パラメータ・ファイルに設定する必要があります。
+　そのパラメータの値とは異なる名前を指定した場合、データベースはエラーを戻します。
+　データベース名のその他の規則は、「データベース・オブジェクトのネーミング規則」を参照してください。
+
+<>以下未定義
+password
+integer
+charset
+tablespace
+filename
+tablespace_name
+tablespace_group_name::=
+service_name::=
+replacement_service_name::=
+spfile_name::=
+pfile_name::=
+time_zone_region
+encrypt_algorithm::=
+shardspace::=
+directory_object_name::=
+
+=========================================================================
