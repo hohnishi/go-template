@@ -409,11 +409,31 @@ create_spfile::=
        } ;
 
 =========================================================================
+# from figure not image description
 create_user::=
-
+  CREATE USER user
+    {   IDENTIFIED       
+          {  BY password [ [HTTP] DIGEST { ENABLE | DISABLE } ]
+           | EXTERNALLY [ AS 'certificate_DN'  |  AS 'kerberos_principal_name' ]
+           | GLOBALLY [ AS '[ directory_DN ]' ]
+          }
+      | NO AUTHENTICATION
+    }
+    [   [ DEFAULT COLLATION collation_name ]
+      | [ DEFAULT TABLESPACE tablespace ]
+      | [ LOCAL ] TEMPORARY TABLESPACE { tablespace | tablespace_group_name }
+      | { QUOTA { size_clause | UNLIMITED } ON tablespace }...
+      | PROFILE profile
+      | PASSWORD EXPIRE
+      | ACCOUNT { LOCK | UNLOCK } ]
+      | ENABLE EDITIONS
+      | CONTAINER = { CURRENT | ALL }
+    ]... ;
+  
 =========================================================================
 <>共通のSQL DDL句
 
+===
 file_specification::=
   {   datafile_tempfile_spec
     | redo_log_file_spec
@@ -434,7 +454,6 @@ redo_log_file_spec::=
   [ SIZE size_clause ]
   [ BLOCKSIZE size_clause
   [ REUSE ]
-
 
 asm_filename::=
   {   fully_qualified_file_name
@@ -461,6 +480,10 @@ autoextend_clause::=
     | ON [ NEXT size_clause ] [ maxsize_clause ]
    }
 
+maxsize_clause::=
+  MAXSIZE { UNLIMITED | size_clause }
+
+===
 size_clause::=
   integer [ K | M | G | T | P | E ]
 
@@ -482,9 +505,7 @@ storage_clause::=
     } ...
   )
 
-maxsize_clause::=
-  MAXSIZE { UNLIMITED | size_clause }
-
+===
 extent_management_clause::=
   EXTENT MANAGEMENT LOCAL [ AUTOALLOCATE | UNIFORM [ SIZE size_clause ] ]
 
@@ -496,6 +517,7 @@ file_name_convert::=
     | NONE
   }
 
+=======================================
 database
 ・DB_NAME初期化パラメータの値と一致する必要があります。
 ・名前の長さは最大8バイトです。
