@@ -1,3 +1,5 @@
+# from 21c SQL Ref manual
+=========================================================================
 create database::=
 CREATE DATABASE [ database ]
   {   USER SYS IDENTIFIED BY password
@@ -98,7 +100,9 @@ permanent_tablespace_attrs::=
     | extent_management_clause
     | segment_management_clause
     | flashback_mode_clause
+    | lost_write_protection
   }...
+# "lost_write_protection"はhttps://docs.oracle.com/cd/F39414_01/sqlrf/img_text/permanent_tablespace_attrs.htmlから漏れている
 
 logging_clause::=
   {   LOGGING
@@ -116,7 +120,6 @@ tablespace_encryption_spec::=
 default_tablespace_params::=
   DEFAULT [ default_table_compression ] [ default_index_compression ]
           [ inmemory_clause ] [ ilm_clause ] [ storage_clause ]
-
 
 default_table_compression::=
   TABLE {   COMPRESS FOR OLTP
@@ -177,6 +180,13 @@ temporary_tablespace_clause::=
 tablespace_group_clause::=
   TABLESPACE GROUP { tablespace_group_name | '' }
 
+lost_write_protection::=
+  [ { ENABLE | DISABLE | REMOVE | SUSPEND } ] LOST WRITE PROTECTION
+
+=============================================
+create_table::==
+:
+
 ilm_clause::=
   ILM
     {   ADD POLICY ilm_policy_clause
@@ -221,12 +231,11 @@ ilm_inmemory_policy::=
 ilm_time_period::=
   integer { { DAY | DAYS } | { MONTH | MONTHS } | { YEAR | YEARS } }
 
-inmemory_attributes::=
-inmemory_memcompress::=
 table_compression::=
-ilm_time_period::=
-function_name::=
-ilm_policy_name::=
+    COMPRESS
+  | ROW STORE COMPRESS [ BASIC | ADVANCED ]
+  | COLUMN STORE COMPRESS [  FOR { QUERY | ARCHIVE } [ LOW | HIGH ] ] [ [NO] ROW LEVEL LOCKING ]
+  | NOCOMPRESS
 
 =========================================================================
 create_pluggable_database::=
@@ -300,19 +309,97 @@ tempfile_reuse_clause::=
   TEMPFILE REUSE
 
 user_tablespaces_clause::=
-
+  USER_TABLESPACES = {   ( 'tablespace' [, 'tablespace' ]... )
+                       | ALL [ EXCEPT ( 'tablespace' [, 'tablespace' ]... ) ]
+                       | NONE
+                     }
+                     [ SNAPSHOT COPY | NO DATA | COPY | MOVE | NOCOPY ]
 
 standbys_clause::=
-logging_clause::=
-create_file_dest_clause::=
+  STANDBYS = {   ( 'cdb_name' [, 'cdb_name' ]... )
+               | { ALL [ EXCEPT ( 'cdb_name' [, 'cdb_name' ]... ) ] }
+               | NONE
+             }
 
-pdb_name::=
-using_snapshot_clause::=
+logging_clause::=
+  { LOGGING | NOLOGGING | FILESYSTEM_LIKE_LOGGING }
+
+create_file_dest_clause::=
+  CREATE_FILE_DEST = { NONE | 'directory_path_name' | diskgroup_name }
+
 create_pdb_clone::=
+  {   { FROM { src_pdb_name [ @ dblink ] } | { NON$CDB @ dblink } }
+    | { AS PROXY FROM src_pdb_name @ dblink }
+  }
+  [ parallel_pdb_creation_clause ]
+  [ default_tablespaces ]
+  [ pdb_storage_clause ]
+  [ file_name_convert ]
+  [ service_name_convert ]
+  [ path_prefix_clause ]
+  [ tempfile_reuse_clause ]
+  [ SNAPSHOT COPY ]
+  [ using_snapshot_clause ]
+  [ user_tablespaces_clause ]
+  [ standbys_clause ]
+  [ logging_clause ]
+  [ create_file_dest_clause ]
+  [ keystore_clause ]
+  [ pdb_refresh_mode_clause ]
+  [ RELOCATE AVAILABILITY {MAX | NORMAL} ]
+  [ NO DATA ]
+  [ HOST = 'hostname' ]
+  [ PORT = number ]
+  
+
+keystore_clause::=
+  KEYSTORE IDENTIFIED BY keystore_password
+
+pdb_refresh_mode_clause::=
+  REFRESH MODE { MANUAL | EVERY refresh_interval { MINUTES  | HOURS } | NONE }
+
 create_pdb_from_xml::=
+  [ AS CLONE ] USING filename
+  [ source_file_name_convert | source_file_directory ]
+  [ { [ COPY | MOVE ] file_name_convert } | NOCOPY ]
+  [ service_name_convert ]
+  [ default_tablespace ]
+  [ pdb_storage_clause ]
+  [ path_prefix_clause ]
+  [ tempfile_reuse_clause ]
+  [ user_tablespaces_clause ]
+  [ standbys_clause ]
+  [ logging_clause ]
+  [ create_file_dest_clause ]
+  [ HOST = 'hostname' ]
+  [ PORT = number ]
+  [ create_pdb_decrypt_from_xml ]
+
 create_pdb_from_mirror_copy::=
+  new_pdb_name FROM base_pdb_name @dblinkname
+  USING MIRROR COPY mirror_name
+
+using_snapshot_clause::=
+  USING SNAPSHOT { snapshot_name | AT SCN snapshot_SCN | AT snapshot_timestamp }
+
 container_map_clause::=
+  CONTAINER_MAP UPDATE { add_table_partition | split_table_partition }
+
 pdb_snapshot_clause::=
+  ENABLE SNAPSHOT { MANUAL | EVERY snapshot_interval { HOURS | MINUTES } NONE }
+  
+source_file_name_convert::=
+  SOURCE_FILE_NAME_CONVERT =
+    {   (    'filename_pattern', 'replacement_filename_pattern'
+          [, 'filename_pattern', 'replacement_filename_pattern' ]... )
+      | NONE
+    }
+
+source_file_directory::=
+  SOURCE_FILE_DIRECTORY = { 'directory_path_name' | NONE }
+
+create_pdb_decrypt_from_xml::=
+  DECRYPT USING 'transport_secret'
 
 =========================================================================
 create_spfile::=
@@ -426,20 +513,51 @@ database
 　データベース名のその他の規則は、「データベース・オブジェクトのネーミング規則」を参照してください。
 
 <>以下未定義
-password
-integer
-charset
-tablespace
-filename
-tablespace_name
+
+tablespace_name::=
 tablespace_group_name::=
+directory_object_name::=
+function_name::=
+ilm_policy_name::=
+directory_path_name::=
+diskgroup_name::=
+mirror_name
+hostname::=
+
 service_name::=
-replacement_service_name::=
+  replacement_service_name::=
+
+pdb_name::=
+  src_pdb_name::=
+  new_pdb_name
+  base_pdb_name
+
+filename::=
 spfile_name::=
 pfile_name::=
-time_zone_region
-encrypt_algorithm::=
+
+password
+keystore_password::=
+
+integer::=
+charset::=
+tablespace::=
 shardspace::=
-directory_object_name::=
+dblink::=
+number::=
+time_zone_region::=
+encrypt_algorithm::=
+transport_secret
+
+snapshot_name
+snapshot_SCN
+snapshot_timestamp
+
+add_table_partition
+split_table_partition
+snapshot_interval
+
+filename_pattern
+replacement_filename_pattern
 
 =========================================================================
