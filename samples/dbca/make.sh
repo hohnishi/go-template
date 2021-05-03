@@ -32,7 +32,9 @@ param="param.json"
 
 for f in ${files}; do
     echo $f;
-    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" > "${DESTDIR}/${f}"
+    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" "${TMPLDIR}/CREATE_TABLESPACE.tmpl" > "${DESTDIR}/${f}"
+#    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CREATE_TABLESPACE.tmpl" > "${DESTDIR}/${f}"
+#    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" > "${DESTDIR}/${f}"
 done
 
 diff -ur ${ORIGDIR} ${DESTDIR}

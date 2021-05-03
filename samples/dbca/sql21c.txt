@@ -118,8 +118,11 @@ tablespace_encryption_spec::=
 
 
 default_tablespace_params::=
-  DEFAULT [ default_table_compression ] [ default_index_compression ]
-          [ inmemory_clause ] [ ilm_clause ] [ storage_clause ]
+  DEFAULT [ default_table_compression ]
+  	  [ default_index_compression ]
+          [ inmemory_clause ]
+	  [ ilm_clause ]
+	  [ storage_clause ]
 
 default_table_compression::=
   TABLE {   COMPRESS FOR OLTP

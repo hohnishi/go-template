@@ -1,0 +1,168 @@
+{{/*
+================================================
+create_tablespace::=
+  CREATE [ BIGFILE | SMALLFILE ]     # filetype
+                                     # type is
+    {   permanent_tablespace_clause  #   "perm" or "user"
+      | temporary_tablespace_clause  #   "temp"
+      | undo_tablespace_clause       #   "undo"
+    } ;
+------------------------------------------------
+*/ -}}
+{{define "create_tablespace" -}}
+CREATE {{with .filetype -}} {{.}} {{end}}
+  {{- if or (eq .type "perm") (eq .type "user") -}}
+    {{- template "permanent_tablespace_clause" . -}}
+  {{- else if eq .type "temp" -}}
+    {{- template "temporary_tablespace_clause" . -}}
+  {{- else if eq .type "undo" -}}
+    {{- template "undo_tablespace_clause" . -}}
+  {{- end -}}
+;
+{{end -}}
+{{/*
+================================================
+permanent_tablespace_clause::= 
+  TABLESPACE tablespace             # tbsname
+  [ DATAFILE file_specification [, file_specification ]... ] # file_specs
+  [ permanent_tablespace_attrs ]
+  [ IN SHARDSPACE shardspace ]      # shardspace
+
+permanent_tablespace_attrs::=
+  {   MINIMUM EXTENT size_clause    # minimum_extent_size
+    | BLOCKSIZE integer [ K ]       # blocksize
+    | logging_clause                # logging is nil | LOGGING | NOLOGGING | FILESYSTEM_LIKE_LOGGING
+    | FORCE LOGGING                 # force_logging
+    | tablespace_encryption_clause
+    | default_tablespace_params
+    | { ONLINE | OFFLINE }
+    | extent_management_clause
+    | segment_management_clause
+    | flashback_mode_clause
+    | lost_write_protection
+  }...
+
+logging_clause::=
+  { LOGGING | NOLOGGING | FILESYSTEM_LIKE_LOGGING }  # logging
+
+tablespace_encryption_clause::=
+  ENCRYPTION [ { [ tablespace_encryption_spec ] ENCRYPT } | DECRYPT ]  # encryption.mode is nil | ENCRYPT | DECRYPT
+
+tablespace_encryption_spec::=
+  USING 'encrypt_algorithm'             # encryption.algorithm:  AES256, AES192, AES128, 3DES168
+------------------------------------------------
+*/ -}}
+{{define "permanent_tablespace_clause" -}}
+TABLESPACE "{{.tbsname}}"
+  DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
+  {{- /* begin "permanent_tablespace_attrs" */ -}}
+  {{with .minimum_extent_size}} MINIMUM EXTENT {{.}}{{end -}}
+  {{with .blocksize}} BLOCKSIZE {{.}}{{end -}}
+  {{with .logging}} {{template "logging_clause" . }}{{end -}}
+  {{with .force_logging}} FORCE LOGGING{{end -}}
+  {{with .tablespace_encryption}} {{template "tablespace_encryption_clause" . }}{{end -}}
+  {{with .default_tablespace_params}} {{template "default_tablespace_params" . }}{{end -}}
+  {{with .on_offline}} {{.}}{{end -}}
+  {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
+  {{with .segment_management}} {{template "segment_management_clause" . }}{{end -}}
+  {{with .flashback_mode}} {{template "flashback_mode_clause" . }}{{end -}}
+  {{with .lost_write_protection}} {{template "lost_write_protection" . }}{{end -}}
+  {{- /* end "permanent_tablespace_attrs" */ -}}
+  {{with .shardspace}} IN SHARDSPACE {{.}}{{end}}
+{{- end -}}
+
+{{define "logging_clause"}}{{.}}{{end}}
+
+{{define "tablespace_encryption_clause" -}}
+ENCRYPTION
+  {{- if eq .mode "ENCRYPT" -}}
+    {{with .algorithm}} USING '{{.}}'{{end}} ENCRYPT
+  {{- else -}}
+    DECRYPT
+  {{- end -}}
+{{- end -}}
+
+{{define "default_tablespace_params" -}}
+{{- /* TBD: "default_tablespace_params" */ -}}
+{{- end -}}
+{{/*
+================================================
+temporary_tablespace_clause::=
+  {   { TEMPORARY TABLESPACE }
+    | { LOCAL TEMPORARY TABLESPACE FOR { ALL | LEAF } }
+  }
+  tablespace
+  [ TEMPFILE file_specification [, file_specification ]... ]
+  [ tablespace_group_clause ]
+  [ extent_management_clause ]
+
+tablespace_group_clause::=
+  TABLESPACE GROUP { tablespace_group_name | '' }
+------------------------------------------------
+*/ -}}
+{{define "temporary_tablespace_clause" -}}
+TEMPORARY TABLESPACE "{{.tbsname}}"
+  TEMPFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
+  {{with .tablespace_group}} {{template "tablespace_group_clause" . }}{{end -}}
+  {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
+{{- end -}}
+
+{{define "tablespace_group_clause" -}}
+  TABLESPACE GROUP {{.}}
+{{- end -}}
+{{/*
+================================================
+undo_tablespace_clause::=
+  UNDO TABLESPACE tablespace
+    [ DATAFILE file_specification [, file_specification ]... ]
+    [ extent_management_clause ]
+    [ tablespace_retention_clause ]
+    [ tablespace_encryption_clause ]
+
+tablespace_retention_clause::=
+  RETENTION { GUARANTEE | NOGUARANTEE }
+------------------------------------------------
+*/ -}}
+{{define "undo_tablespace_clause" -}}
+UNDO TABLESPACE "{{.tbsname}}"
+  DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
+  {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
+  {{with .tablespace_encryption}} {{template "tablespace_encryption_clause" . }}{{end -}}
+  {{with .tablespace_retention}} {{template "tablespace_retention_clause" . }}{{end -}}
+{{end -}}
+
+{{define "tablespace_retention_clause" -}}
+RETENTION {{.}}
+{{- end -}}
+{{/*
+================================================
+segment_management_clause::=
+  SEGMENT SPACE MANAGEMENT { AUTO | MANUAL }
+------------------------------------------------
+  "segment_management" : { "mode" : "AUTO"|"MANUAL" }  # OPTION
+*/ -}}
+{{define "segment_management_clause" -}}
+SEGMENT SPACE MANAGEMENT {{.mode}}
+{{- end -}}
+
+{{/*
+================================================
+flashback_mode_clause::=
+  FLASHBACK { ON | OFF }
+------------------------------------------------
+  "flashback_mode" : { "mode" : "ON"|"OFF" }  # OPTION
+*/ -}}
+{{define "flashback_mode_clause" -}}
+FLASHBACK {{.mode}}
+{{- end -}}
+
+{{/*
+================================================
+lost_write_protection::=
+  [ { ENABLE | DISABLE | REMOVE | SUSPEND } ] LOST WRITE PROTECTION
+------------------------------------------------
+  "lost_write_protection" : { "mode" : "ENABLE"|"DISABLE"|"REMOVE"|"SUSPEND" }    # OPTION
+*/ -}}
+{{define "lost_write_protection" -}}
+{{.mode}} LOST WRITE PROTECTION
+{{- end -}}
