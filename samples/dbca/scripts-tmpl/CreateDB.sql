@@ -16,14 +16,14 @@ MAXLOGHISTORY {{$maxloghistory}}
 MAXLOGFILES {{$maxlogfiles}}
 MAXLOGMEMBERS {{$maxlogmembers}}
 MAXDATAFILES {{$maxdatafiles}}
-DATAFILE {{template "datafile_tempfile_spec" .SYSTEM }}
+DATAFILE {{- template "datafile_tempfile_spec" .SYSTEM }}
 EXTENT MANAGEMENT LOCAL
 SYSAUX
-  DATAFILE {{template "datafile_tempfile_spec" .SYSAUX }}
+  DATAFILE {{- template "datafile_tempfile_spec" .SYSAUX }}
 SMALLFILE DEFAULT TEMPORARY TABLESPACE {{.TEMP.tbsname}}
-  TEMPFILE {{template "datafile_tempfile_spec" .TEMP }}
+  TEMPFILE {{- template "datafile_tempfile_spec" .TEMP }}
 SMALLFILE UNDO TABLESPACE "{{.UNDO.tbsname}}"
-  DATAFILE {{template "datafile_tempfile_spec" .UNDO }}
+  DATAFILE {{- template "datafile_tempfile_spec" .UNDO }}
 CHARACTER SET {{.CHARSET}}
 NATIONAL CHARACTER SET {{.NSCHARSET}}
 LOGFILE
