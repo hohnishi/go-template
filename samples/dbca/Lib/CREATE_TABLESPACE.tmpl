@@ -55,7 +55,7 @@ tablespace_encryption_spec::=
 {{define "permanent_tablespace_clause" -}}
 TABLESPACE "{{.tbsname}}"
   DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
-  {{- /* begin "permanent_tablespace_attrs" */ -}}
+{{- /* begin "permanent_tablespace_attrs" */ -}}
   {{with .minimum_extent_size}} MINIMUM EXTENT {{.}}{{end -}}
   {{with .blocksize}} BLOCKSIZE {{.}}{{end -}}
   {{with .logging}} {{template "logging_clause" . }}{{end -}}
@@ -67,7 +67,7 @@ TABLESPACE "{{.tbsname}}"
   {{with .segment_management}} {{template "segment_management_clause" . }}{{end -}}
   {{with .flashback_mode}} {{template "flashback_mode_clause" . }}{{end -}}
   {{with .lost_write_protection}} {{template "lost_write_protection" . }}{{end -}}
-  {{- /* end "permanent_tablespace_attrs" */ -}}
+{{- /* end "permanent_tablespace_attrs" */ -}}
   {{with .shardspace}} IN SHARDSPACE {{.}}{{end}}
 {{- end -}}
 
@@ -89,7 +89,7 @@ ENCRYPTION
 ================================================
 temporary_tablespace_clause::=
   {   { TEMPORARY TABLESPACE }
-    | { LOCAL TEMPORARY TABLESPACE FOR { ALL | LEAF } }
+    | { LOCAL TEMPORARY TABLESPACE FOR { ALL | LEAF } }  # No support local temp tbs
   }
   tablespace
   [ TEMPFILE file_specification [, file_specification ]... ]

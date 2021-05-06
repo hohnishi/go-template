@@ -48,7 +48,7 @@ redo_log_file_spec::=
 ------------------------------------------------
 */ -}}
 {{define "datafile_tempfile_spec" -}}
-{{- with .path }} '{{.}}'{{end -}}
+  {{- with .path }} '{{.}}'{{end -}}
   {{- with .size }} SIZE {{.}}{{end -}}
   {{- with .reuse }} {{.}}{{end -}}
   {{- with .autoextend }} {{template "autoextend_clause" . -}} {{end -}}
@@ -60,4 +60,12 @@ AUTOEXTEND {{.mode}} {{- with .next }} NEXT {{.}}{{end}}{{with .maxsize }} {{tem
 
 {{define "maxsize_clause" -}}
 MAXSIZE {{if eq . "UNLIMITED" -}} UNLIMITED {{- else -}} {{.}} {{end -}}
+{{end -}}
+
+{{define "redo_log_file_spec" -}}
+  {{range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{- with .path }} '{{.}}'{{end -}}
+  {{- with .size }} SIZE {{.}}{{end -}}
+  {{- with .blocksize}} BLOCKSIZE {{.}}{{end -}}
+  {{- with .reuse }} {{.}}{{end -}}
+{{end -}}
 {{end -}}

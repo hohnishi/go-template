@@ -53,7 +53,7 @@
   },
   "TEMP": {
     "type": "temp",
-    "filetype": "small",
+    "filetype": "SMALLFILE",
     "tbsname": "TEMP",
     "path": "C:\\app\\Administrator\\oradata\\ORCL\\temp01.dbf",
     "fname": "temp01.dbf",
@@ -64,7 +64,7 @@
   },
   "UNDO": {
     "type": "undo",
-    "filetype": "small",
+    "filetype": "SMALLFILE",
     "tbsname": "UNDOTBS1",
     "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
     "fname": "undotbs01.dbf",
@@ -75,9 +75,9 @@
   },
   "tbs": {
     "type": "perm",
-    "filetype": "small",
+    "filetype": "SMALLFILE",
     "tbsname": "USERS",
-    "dbfs": [
+    "file_specs": [
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
         "size": "5M",
@@ -89,9 +89,9 @@
   },
   "pdbTbs": {
     "type": "user",
-    "filetype": "small",
+    "filetype": "SMALLFILE",
     "tbsname": "USERS",
-    "dbfs": [
+    "file_specs": [
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
         "size": "5M",

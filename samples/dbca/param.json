@@ -2,10 +2,164 @@
   "ps": "\\",
   "ORACLE_BASE": "C:\\app\\Administrator",
   "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
+  "database": "orcl",
+  "sys_password": "manager",
+  "system_password": "manager",
+  "controlfile_reuse": "y",
+  "maxdatafiles": 1024,
+  "maxinstances": 8,
+  "charset": "AL32UTF8",
+  "nscharset": "AL16UTF16",
+  "set_default_tablespace": "SMALLFILE",
+  "log_files": [
+    {
+      "group": 1,
+      "redo_log_file_spec": {
+        "files": [
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log",
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo02.log",
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo03.log"
+        ],
+        "size": "200M",
+        "blocksize": "16K",
+        "reuse": "REUSE"
+      }
+    },
+    {
+      "group": 2,
+      "redo_log_file_spec": {
+        "files": [
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log",
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo02.log",
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo03.log"
+        ],
+        "size": "200M",
+        "blocksize": "16K",
+        "reuse": "REUSE"
+      }
+    },
+    {
+      "group": 3,
+      "redo_log_file_spec": {
+        "files": [
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log",
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo02.log",
+          "C:\\app\\Administrator\\oradata\\ORCL\\redo03.log"
+        ],
+        "size": "200M",
+        "blocksize": "16K",
+        "reuse": "REUSE"
+      }
+    }
+  ],
+  "maxlogfiles": 16,
+  "maxlogmembers": 3,
+  "maxloghistory": 1,
+  "archivelog_mode": "ARCHIVELOG",
+  "force_logging": "FORCE LOGGING",
+  "standby_nologging": "DATA AVAILABILITY",
+  "extent_management_local": "y",
+  "system": {
+    "file_specs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\system01.dbf",
+        "fname": "system01.dbf",
+        "size": "700M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "10240K",
+          "maxsize": "UNLIMITED"
+        }
+      }
+    ]
+  },
+  "sysaux": {
+    "file_specs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux01.dbf",
+        "fname": "sysaux01.dbf",
+        "size": "550M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "10240K",
+          "maxsize": "UNLIMITED"
+        }
+      }
+    ]
+  },
+  "default_tablespace": {
+    "tbsname": "USERS",
+    "file_spec": {
+      "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
+      "size": "5M",
+      "reuse": "REUSE",
+      "autoextend": {
+        "mode": "ON",
+        "next": "1280K",
+        "maxsize": "UNLIMITED"
+      }
+    },
+    "extent_management": {
+      "mode": ""
+    }
+  },
+  "default_temp_tablespace": {
+    "filetype": "SMALLFILE",
+    "tbsname": "TEMP",
+    "file_specs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\temp01.dbf",
+        "size": "20M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "640K",
+          "maxsize": "UNLIMITED"
+        }
+      }
+    ],
+    "extent_management": {
+      "mode": ""
+    }
+  },
+  "undo_tablespace": {
+    "filetype": "SMALLFILE",
+    "tbsname": "UNDOTBS1",
+    "file_specs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
+        "size": "200M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "5120K",
+          "maxsize": "UNLIMITED"
+        }
+      }
+    ]
+  },
+  "set_time_zone": "Asia/Tokyo",
+  "user_data_tablespace": {
+    "filetype": "SMALLFILE",
+    "tbsname": "USERDATA",
+    "file_specs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\user01.dbf",
+        "size": "200M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "5120K",
+          "maxsize": "UNLIMITED"
+        }
+      }
+    ]
+  },
+  "_": "_",
   "SID": "orcl",
   "SID_U": "ORCL",
-  "CHARSET": "AL32UTF8",
-  "NSCHARSET": "AL16UTF16",
   "DB_BASE": "C:\\app\\Administrator\\oradata\\ORCL",
   "SEED_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\pdbseed",
   "PDB_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB",
@@ -13,99 +167,27 @@
   "SCRIPT_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
   "LOG_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
   "dbpara": [
-    [ "nls_language", "\"JAPANESE\"" ],
-    [ "nls_territory", "\"JAPAN\"" ],
-    [ "compatible", "19.0.0" ],
-    [ "diagnostic_dest", "C:\\app\\Administrator" ],
-    [ "enable_pluggable_database", "true" ],
-    [ "memory_target", "1638m" ],
-    [ "open_cursors", "300" ],
-    [ "db_block_size", "8192" ],
-    [ "undo_tablespace", "UNDOTBS1" ],
-    [ "audit_file_dest", "\"C:\\app\\Administrator\\admin\\orcl\\adump\"" ],
-    [ "audit_trail", "db" ],
-    [ "remote_login_passwordfile", "EXCLUSIVE" ],
-    [ "db_domain", "\"world\"" ],
-    [ "db_name", "\"orcl\"" ],
-    [ "control_files", "(\"C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl\", \"C:\\app\\Administrator\\oradata\\ORCL\\control02.ctl\")" ],
-    [ "processes", "320" ],
-    [ "dispatchers", "\"(PROTOCOL=TCP) (SERVICE=orclXDB)\"" ]
+    [      "nls_language",                 "\"JAPANESE\""    ],
+    [      "nls_territory",                "\"JAPAN\""    ],
+    [      "compatible",                   "19.0.0"    ],
+    [      "diagnostic_dest",              "C:\\app\\Administrator"    ],
+    [      "enable_pluggable_database",    "true"    ],
+    [      "memory_target",                "1638m"    ],
+    [      "open_cursors",                 "300"    ],
+    [      "db_block_size",                "8192"    ],
+    [      "undo_tablespace",              "UNDOTBS1"    ],
+    [      "audit_file_dest",              "\"C:\\app\\Administrator\\admin\\orcl\\adump\""    ],
+    [      "audit_trail",                  "db"    ],
+    [      "remote_login_passwordfile",    "EXCLUSIVE"    ],
+    [      "db_domain",                    "\"world\""    ],
+    [      "db_name",                      "\"orcl\""    ],
+    [      "control_files",                "(\"C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl\", \"C:\\app\\Administrator\\oradata\\ORCL\\control02.ctl\")"    ],
+    [      "processes",                    "320"    ],
+    [      "dispatchers",                  "\"(PROTOCOL=TCP) (SERVICE=orclXDB)\""    ]
   ],
   "ctrl_files": {
     "ctrl1": "C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl",
     "ctrl2": "C:\\app\\Administrator\\oradata\\ORCL\\control02.ctl"
-  },
-  "redo_files": {
-    "redo1": {
-      "num": 1,
-      "path": "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log",
-      "size": "200M"
-    },
-    "redo2": {
-      "num": 2,
-      "path": "C:\\app\\Administrator\\oradata\\ORCL\\redo02.log",
-      "size": "200M"
-    },
-    "redo3": {
-      "num": 3,
-      "path": "C:\\app\\Administrator\\oradata\\ORCL\\redo03.log",
-      "size": "200M"
-    }
-  },
-  "SYSTEM": {
-    "type": "system",
-    "tbsname": "SYSTEM",
-    "path": "C:\\app\\Administrator\\oradata\\ORCL\\system01.dbf",
-    "fname": "system01.dbf",
-    "size": "700M",
-    "reuse": "REUSE",
-    "autoextend": {
-      "mode": "ON",
-      "next": "10240K",
-      "maxsize": "UNLIMITED"
-    }
-  },
-  "SYSAUX": {
-    "type": "sysaux",
-    "tbsname": "SYSAUX",
-    "path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux01.dbf",
-    "fname": "sysaux01.dbf",
-    "size": "550M",
-    "reuse": "REUSE",
-    "autoextend": {
-      "mode": "ON",
-      "next": "10240K",
-      "maxsize": "UNLIMITED"
-    }
-  },
-  "TEMP": {
-    "type": "temp",
-    "filetype": "SMALLFILE",
-    "tbsname": "TEMP",
-    "path": "C:\\app\\Administrator\\oradata\\ORCL\\temp01.dbf",
-    "fname": "temp01.dbf",
-    "size": "20M",
-    "reuse": "REUSE",
-    "autoextend": {
-      "mode": "ON",
-      "next": "640K",
-      "maxsize": "UNLIMITED"
-    },
-    "Uniformsize": "1M"
-  },
-  "UNDO": {
-    "type": "undo",
-    "filetype": "SMALLFILE",
-    "tbsname": "UNDOTBS1",
-    "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
-    "fname": "undotbs01.dbf",
-    "size": "200M",
-    "reuse": "REUSE",
-    "autoextend": {
-      "mode": "ON",
-      "next": "5120K",
-      "maxsize": "UNLIMITED"
-    }
   },
   "tbs": {
     "type": "perm",
@@ -122,20 +204,20 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
         "size": "5M",
-	"reuse": "REUSE",
+        "reuse": "REUSE",
         "autoextend": {
           "mode": "ON",
           "next": "1280K",
           "maxsize": "UNLIMITED"
-	}
+        }
       },
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
         "size": "5M",
-	"reuse": "REUSE",
+        "reuse": "REUSE",
         "autoextend": {
-	  "mode": "OFF"
-	}
+          "mode": "OFF"
+        }
       }
     ]
   },
@@ -148,10 +230,10 @@
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
         "size": "5M",
         "autoextend": {
-	  "mode": "ON",
-	  "next": "1280K",
+          "mode": "ON",
+          "next": "1280K",
           "maxsize": "UNLIMITED"
-	}
+        }
       }
     ]
   },
@@ -161,70 +243,70 @@
       "filetype": "SMALLFILE",
       "tbsname": "DBCA-USERS",
       "file_specs": [
-	{
+        {
           "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
           "size": "5M",
-	  "reuse": "REUSE",
+          "reuse": "REUSE",
           "autoextend": {
             "mode": "ON",
             "next": "1280K",
             "maxsize": "UNLIMITED"
-	  }
-	}
+          }
+        }
       ],
-      "logging" : "LOGGING",
-      "extent_management" : {
-	"mode" : ""
+      "logging": "LOGGING",
+      "extent_management": {
+        "mode": ""
       },
-      "segment_management" : {
-	"mode" : "AUTO"
+      "segment_management": {
+        "mode": "AUTO"
       }
     },
-    "e2" : {
+    "e2": {
       "type": "perm",
       "filetype": "SMALLFILE",
-      "tbsname" : "FULLOPT",
-      "file_specs" : [
-	{
-          "path" : "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
-          "size" : "5M",
-	  "reuse" : "REUSE",
-          "autoextend" : {
-            "mode" : "ON",
-            "next" : "1280K",
-            "maxsize" : "UNLIMITED"
-	  }
-	},
-	{
-          "path" : "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
-          "size" : "5M",
-	  "reuse" : "REUSE",
-          "autoextend" : {
-            "mode" : "OFF"
-	  }
-	}
+      "tbsname": "FULLOPT",
+      "file_specs": [
+        {
+          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
+          "size": "5M",
+          "reuse": "REUSE",
+          "autoextend": {
+            "mode": "ON",
+            "next": "1280K",
+            "maxsize": "UNLIMITED"
+          }
+        },
+        {
+          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
+          "size": "5M",
+          "reuse": "REUSE",
+          "autoextend": {
+            "mode": "OFF"
+          }
+        }
       ],
-      "minimum_extent_size" : "8K",
+      "minimum_extent_size": "8K",
       "blocksize": "16K",
-      "logging" : "LOGGING",
+      "logging": "LOGGING",
       "force_logging": "y",
       "tablespace_encryption": {
-	"mode": "ENCRYPT",
-	"algorithm": "AES128"
+        "mode": "ENCRYPT",
+        "algorithm": "AES128"
       },
-      "default_tablespace_params" : "TBD",
+      "default_tablespace_params": "TBD",
       "on_offline": "ONLINE",
-      "extent_management" : {
-        "uniformsize" : "1M"
+      "extent_management": {
+        "uniformsize": "1M"
       },
-      "segment_management" : {
-	"mode" : "AUTO"
+      "segment_management": {
+        "mode": "AUTO"
       },
-      "flashback_mode" : {
-	"mode" : "ON"
+      "flashback_mode": {
+        "mode": "ON"
       },
-      "lost_write_protection" : {
-	"mode" : "ENABLE"
+      "lost_write_protection": {
+        "mode": "ENABLE"
       },
       "shardspace": "NAME"
     }

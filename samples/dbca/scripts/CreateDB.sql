@@ -9,14 +9,14 @@ MAXLOGHISTORY 1
 MAXLOGFILES 16
 MAXLOGMEMBERS 3
 MAXDATAFILES 1024
-DATAFILE 'C:\app\Administrator\oradata\ORCL\system01.dbf' SIZE 700M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
+DATAFILE
 EXTENT MANAGEMENT LOCAL
 SYSAUX
-  DATAFILE 'C:\app\Administrator\oradata\ORCL\sysaux01.dbf' SIZE 550M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED
-SMALLFILE DEFAULT TEMPORARY TABLESPACE TEMP
-  TEMPFILE 'C:\app\Administrator\oradata\ORCL\temp01.dbf' SIZE 20M REUSE AUTOEXTEND ON NEXT 640K MAXSIZE UNLIMITED
-SMALLFILE UNDO TABLESPACE "UNDOTBS1"
-  DATAFILE 'C:\app\Administrator\oradata\ORCL\undotbs01.dbf' SIZE 200M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED
+  DATAFILE
+SMALLFILE DEFAULT TEMPORARY TABLESPACE <no value>
+  TEMPFILE
+SMALLFILE UNDO TABLESPACE "<no value>"
+  DATAFILE
 CHARACTER SET AL32UTF8
 NATIONAL CHARACTER SET AL16UTF16
 LOGFILE
@@ -27,9 +27,9 @@ USER SYS IDENTIFIED BY "&&sysPassword"
 USER SYSTEM IDENTIFIED BY "&&systemPassword"
 enable pluggable database
 seed file_name_convert=(
-  'C:\app\Administrator\oradata\ORCL\system01.dbf','C:\app\Administrator\oradata\ORCL\pdbseed\system01.dbf',
-  'C:\app\Administrator\oradata\ORCL\sysaux01.dbf','C:\app\Administrator\oradata\ORCL\pdbseed\sysaux01.dbf',
-  'C:\app\Administrator\oradata\ORCL\temp01.dbf','C:\app\Administrator\oradata\ORCL\pdbseed\temp01.dbf',
-  'C:\app\Administrator\oradata\ORCL\undotbs01.dbf','C:\app\Administrator\oradata\ORCL\pdbseed\undotbs01.dbf'
+  '<no value>','C:\app\Administrator\oradata\ORCL\pdbseed\<no value>',
+  '<no value>','C:\app\Administrator\oradata\ORCL\pdbseed\<no value>',
+  '<no value>','C:\app\Administrator\oradata\ORCL\pdbseed\<no value>',
+  '<no value>','C:\app\Administrator\oradata\ORCL\pdbseed\<no value>'
   ) LOCAL UNDO ON;
 spool off

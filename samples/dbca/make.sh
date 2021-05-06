@@ -4,6 +4,7 @@ GOTEMPLATE=../../gotemplate
 TMPLDIR=scripts-tmpl
 DESTDIR=scripts
 ORIGDIR=scripts-orig
+LIBDIR=Lib
 
 files="
 CreateClustDBViews.sql
@@ -30,11 +31,15 @@ mkdir -p ${DESTDIR}
 param="param.json"
 [ $# -ne 0 ] && param="$1"
 
+templates="\
+${LIBDIR}/Common.tmpl \
+${LIBDIR}/CREATE_TABLESPACE.tmpl \
+${LIBDIR}/CREATE_DATABASE.tmpl \
+"
+
 for f in ${files}; do
     echo $f;
-    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" "${TMPLDIR}/CREATE_TABLESPACE.tmpl" > "${DESTDIR}/${f}"
-#    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CREATE_TABLESPACE.tmpl" > "${DESTDIR}/${f}"
-#    ${GOTEMPLATE} -j "$param"  "${TMPLDIR}/${f}" "${TMPLDIR}/CommonTablespace.tmpl" > "${DESTDIR}/${f}"
+    ${GOTEMPLATE} -j "$param" "${TMPLDIR}/${f}" $templates > "${DESTDIR}/${f}"
 done
 
 diff -ur ${ORIGDIR} ${DESTDIR}

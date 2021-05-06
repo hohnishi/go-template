@@ -1,9 +1,9 @@
 {{/* optional param */ -}}
-{{$maxinstances  := or .MAXINSTANCES  8 -}}
-{{$maxloghistory := or .MAXLOGHISTORY 1 -}}
-{{$maxlogfiles   := or .MAXLOGFILES   16 -}}
-{{$maxlogmembers := or .MAXLOGMEMBERS 3 -}}
-{{$maxdatafiles  := or .MAXDATAFILES  1024 -}}
+{{$maxinstances  := or .maxinstances  8 -}}
+{{$maxloghistory := or .maxloghistory 1 -}}
+{{$maxlogfiles   := or .maxlogfiles   16 -}}
+{{$maxlogmembers := or .maxlogmembers 3 -}}
+{{$maxdatafiles  := or .maxdatafiles  1024 -}}
 {{/* ================ */ -}}
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
@@ -24,8 +24,8 @@ SMALLFILE DEFAULT TEMPORARY TABLESPACE {{.TEMP.tbsname}}
   TEMPFILE {{- template "datafile_tempfile_spec" .TEMP }}
 SMALLFILE UNDO TABLESPACE "{{.UNDO.tbsname}}"
   DATAFILE {{- template "datafile_tempfile_spec" .UNDO }}
-CHARACTER SET {{.CHARSET}}
-NATIONAL CHARACTER SET {{.NSCHARSET}}
+CHARACTER SET {{.charset}}
+NATIONAL CHARACTER SET {{.nscharset}}
 LOGFILE
   GROUP 1 ('{{.DB_BASE}}\redo01.log') SIZE 200M,
   GROUP 2 ('{{.DB_BASE}}\redo02.log') SIZE 200M,

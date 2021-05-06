@@ -1,0 +1,121 @@
+{{/*
+================================================
+create database::=
+CREATE DATABASE [ database ]
+  {   USER SYS IDENTIFIED BY password
+    | USER SYSTEM IDENTIFIED BY password
+    | CONTROLFILE REUSE
+    | MAXDATAFILES integer
+    | MAXINSTANCES integer
+    | CHARACTER SET charset
+    | NATIONAL CHARACTER SET charset
+    | SET DEFAULT { BIGFILE | SMALLFILE } TABLESPACE
+    | database_logging_clauses
+    | tablespace_clauses
+    | set_time_zone_clause
+    | [ BIGFILE | SMALLFILE ] USER_DATA TABLESPACE tablespace_name
+        DATAFILE datafile_tempfile_spec [, datafile_tempfile_spec ]...
+    | enable_pluggable_database
+  }... ;
+
+database_logging_clauses::=
+{   LOGFILE [ GROUP integer ] file_specification [, [ GROUP integer ] file_specification ]...
+  | MAXLOGFILES integer
+  | MAXLOGMEMBERS integer
+  | MAXLOGHISTORY integer
+  | { ARCHIVELOG | NOARCHIVELOG }
+  | FORCE LOGGING
+  | SET STANDBY NOLOGGING FOR {DATA AVAILABILITY | LOAD PERFORMANCE}
+};
+
+tablespace_clauses::=
+{   EXTENT MANAGEMENT LOCAL
+  | DATAFILE        file_specification [, file_specification ]...
+  | SYSAUX DATAFILE file_specification [, file_specification ]...
+  | default_tablespace
+  | default_temp_tablespace
+  | undo_tablespace
+}
+
+default_tablespace::=
+  DEFAULT TABLESPACE tablespace
+    [ DATAFILE datafile_tempfile_spec ]
+    [ extent_management_clause ]
+
+default_temp_tablespace::=
+  [ BIGFILE | SMALLFILE ] DEFAULT
+  {   { TEMPORARY TABLESPACE }
+    | { LOCAL TEMPORARY TABLESPACE FOR { ALL | LEAF } }  # No support local temp tbs
+  } tablespace
+  [ TEMPFILE file_specification [, file_specification ]...]
+  [ extent_management_clause ]
+
+undo_tablespace::=
+  [ BIGFILE | SMALLFILE ] UNDO TABLESPACE tablespace
+    [ DATAFILE file_specification [, file_specification ]...]
+
+set_time_zone_clause::=
+  SET TIME_ZONE = '{ { + | - } hh : mi | time_zone_region }'
+   
+enable_pluggable_database::=
+  ENABLE PLUGGABLE DATABASE
+  [ SEED [ file_name_convert ]
+         [ SYSTEM tablespace_datafile_clauses ]
+         [ SYSAUX tablespace_datafile_clauses ]
+  ]
+  [ undo_mode_clause ]
+
+tablespace_datafile_clauses::=
+  DATAFILES { SIZE size_clause | autoextend_clause }...
+
+undo_mode_clause::=
+  LOCAL UNDO { ON | OFF }
+------------------------------------------------
+*/ -}}
+{{define "create_database" -}}
+CREATE DATABASE {{with .database -}}{{.}}{{end}}
+  {{with .sys_password}} USER SYS IDENTIFIED BY "{{.}}"{{end -}}
+  {{with .system_password}} USER SYSTEM IDENTIFIED BY "{{.}}"{{end -}}
+  {{with .controlfile_reuse}} CONTROLFILE REUSE{{end -}}
+  {{with .maxdatafiles}} {{.}}{{end -}}
+  {{with .maxinstances}} {{.}}{{end -}}
+  {{with .charset}} CHARACTER SET {{.}}{{end -}}
+  {{with .nscharset}} NATIONAL CHARACTER SET {{.}}{{end -}}
+  {{with .set_default_tablespace}} SET DEFAULT {{.}} TABLESPACE{{end -}}
+{{/* begin database_logging_clauses */ -}}
+  {{with .log_files -}}
+    LOGFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{with .group}}.{{end}} {{template "redo_log_file_spec" .file_spec}}{{end}}{{println ""}}
+  {{end -}}
+  {{with .maxlogfiles}} {{.}}{{end -}}
+  {{with .maxlogmembers}} {{.}}{{end -}}
+  {{with .maxloghistory}} {{.}}{{end -}}
+  {{with .archivelog_mode}} {{.}}{{end -}}
+  {{with .force_logging}} {{.}}{{end -}}
+  {{with .standby_nologging}} SET STANDBY NOLOGGING FOR {{.}}{{end -}}
+{{/* end database_logging_clauses */ -}}
+{{/* begin tablespace_clauses */ -}}
+  {{with .extent_management_local}} EXTENT MANAGEMENT LOCAL{{end -}}
+  {{with .system}} DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
+  {{with .sysaux}} SYSAUX DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
+  {{with .default_tablespace }} DEFAULT TABLESPACE {{.tbsname}}
+    {{with .file_spec}} DATAFILE {{template "datafile_tempfile_spec" .}}{{end -}}
+    {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
+  {{end -}}
+  {{with .default_temp_tablespace }}{{with .filetype -}} {{.}}{{end}} DEFAULT
+    TEMPORARY TABLESPACE {{.tbsname}}
+    {{with .file_specs}} TEMPFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}{{end}}
+    {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
+  {{end -}}
+  {{with .undo_tablespace}}{{with .filetype -}} {{.}}{{end}}
+    UNDO TABLESPACE {{.tbsname}}
+    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}{{end}}
+  {{end}}
+{{/* end tablespace_clauses */ -}}
+  {{with .set_time_zone}}SET TIME_ZONE = '{{.}}'{{end}}
+  {{with .user_data_tablespace}}{{with .filetype -}} {{.}}{{end}}
+    USER_DATA TABLESPACE {{.tbsname}}
+    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}{{end}}
+  {{end}}
+  {{template "enable_pluggable_database" .}}{{end}}
+{{end}}
+{{end}}
