@@ -73,49 +73,50 @@ undo_mode_clause::=
 ------------------------------------------------
 */ -}}
 {{define "create_database" -}}
-CREATE DATABASE {{with .database -}}{{.}}{{end}}
-  {{with .sys_password}} USER SYS IDENTIFIED BY "{{.}}"{{end -}}
-  {{with .system_password}} USER SYSTEM IDENTIFIED BY "{{.}}"{{end -}}
-  {{with .controlfile_reuse}} CONTROLFILE REUSE{{end -}}
-  {{with .maxdatafiles}} {{.}}{{end -}}
-  {{with .maxinstances}} {{.}}{{end -}}
-  {{with .charset}} CHARACTER SET {{.}}{{end -}}
-  {{with .nscharset}} NATIONAL CHARACTER SET {{.}}{{end -}}
-  {{with .set_default_tablespace}} SET DEFAULT {{.}} TABLESPACE{{end -}}
-{{/* begin database_logging_clauses */ -}}
+CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
+  {{with .sys_password}}USER SYS IDENTIFIED BY "{{.}}"{{end}}
+  {{with .system_password}}USER SYSTEM IDENTIFIED BY "{{.}}"{{end}}
+  {{with .controlfile_reuse}}CONTROLFILE REUSE{{end}}
+  {{with .maxdatafiles}}MAXDATAFILES {{.}}{{end}}
+  {{with .maxinstances}}MAXINSTANCES {{.}}{{end}}
+  {{with .charset}}CHARACTER SET {{.}}{{end}}
+  {{with .nscharset}}NATIONAL CHARACTER SET {{.}}{{end}}
+  {{with .set_default_tablespace}}SET DEFAULT {{.}} TABLESPACE{{end}}
+-- begin database_logging_clauses
   {{with .log_files -}}
-    LOGFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{with .group}}.{{end}} {{template "redo_log_file_spec" .file_spec}}{{end}}{{println ""}}
+    LOGFILE {{range $i, $_ := .}}{{if ne $i 0}}{{print ","}}{{end}}
+  GROUP {{.group}} {{template "redo_log_file_spec" .redo_log_file_spec}}{{end}}{{println ""}}
   {{end -}}
-  {{with .maxlogfiles}} {{.}}{{end -}}
-  {{with .maxlogmembers}} {{.}}{{end -}}
-  {{with .maxloghistory}} {{.}}{{end -}}
-  {{with .archivelog_mode}} {{.}}{{end -}}
-  {{with .force_logging}} {{.}}{{end -}}
-  {{with .standby_nologging}} SET STANDBY NOLOGGING FOR {{.}}{{end -}}
-{{/* end database_logging_clauses */ -}}
-{{/* begin tablespace_clauses */ -}}
-  {{with .extent_management_local}} EXTENT MANAGEMENT LOCAL{{end -}}
-  {{with .system}} DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
-  {{with .sysaux}} SYSAUX DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}
+  {{with .maxlogfiles}}MAXLOGFILES {{.}}{{end}}
+  {{with .maxlogmembers}}MAXLOGMEMBERS {{.}}{{end}}
+  {{with .maxloghistory}}MAXLOGHISTORY {{.}}{{end}}
+  {{with .archivelog_mode}}{{.}}{{end}}
+  {{with .force_logging}}{{.}}{{end}}
+  {{with .standby_nologging}}SET STANDBY NOLOGGING FOR {{.}}{{end}}
+-- end database_logging_clauses
+-- begin tablespace_clauses
+  {{with .extent_management_local}}EXTENT MANAGEMENT LOCAL{{end}}
+  {{with .system}}DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{with .sysaux}}SYSAUX DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
   {{with .default_tablespace }} DEFAULT TABLESPACE {{.tbsname}}
-    {{with .file_spec}} DATAFILE {{template "datafile_tempfile_spec" .}}{{end -}}
-    {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
-  {{end -}}
-  {{with .default_temp_tablespace }}{{with .filetype -}} {{.}}{{end}} DEFAULT
-    TEMPORARY TABLESPACE {{.tbsname}}
-    {{with .file_specs}} TEMPFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}{{end}}
-    {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
-  {{end -}}
-  {{with .undo_tablespace}}{{with .filetype -}} {{.}}{{end}}
-    UNDO TABLESPACE {{.tbsname}}
-    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}{{end}}
+    {{with .file_spec}} DATAFILE {{template "datafile_tempfile_spec" .}}{{end}}
+    {{with .extent_management}} {{template "extent_management_clause" . }}{{end}}
   {{end}}
-{{/* end tablespace_clauses */ -}}
+  {{with .default_temp_tablespace }}{{with .filetype -}} {{.}}{{end}} DEFAULT TEMPORARY TABLESPACE {{.tbsname}}
+    {{with .file_specs}} TEMPFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+    {{with .extent_management}} {{template "extent_management_clause" . }}{{end}}
+  {{end}}
+  {{with .undo_tablespace}}{{with .filetype -}} {{.}}{{end}} UNDO TABLESPACE {{.tbsname}}
+    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{end}}
+-- end tablespace_clauses
   {{with .set_time_zone}}SET TIME_ZONE = '{{.}}'{{end}}
-  {{with .user_data_tablespace}}{{with .filetype -}} {{.}}{{end}}
-    USER_DATA TABLESPACE {{.tbsname}}
-    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{println ""}}{{end}}
+  {{with .user_data_tablespace}}{{with .filetype -}} {{.}}{{end}} USER_DATA TABLESPACE {{.tbsname}}
+    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
   {{end}}
-  {{template "enable_pluggable_database" .}}{{end}}
+  {{template "enable_pluggable_database" .}}
 {{end}}
+
+{{define "enable_pluggable_database"}}
 {{end}}
+

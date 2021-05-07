@@ -1,11 +1,8 @@
 {
-  "ps": "\\",
-  "ORACLE_BASE": "C:\\app\\Administrator",
-  "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
   "database": "orcl",
   "sys_password": "manager",
   "system_password": "manager",
-  "controlfile_reuse": "y",
+  "controlfile_reuse": true,
   "maxdatafiles": 1024,
   "maxinstances": 8,
   "charset": "AL32UTF8",
@@ -58,11 +55,22 @@
   "archivelog_mode": "ARCHIVELOG",
   "force_logging": "FORCE LOGGING",
   "standby_nologging": "DATA AVAILABILITY",
-  "extent_management_local": "y",
+  "extent_management_local": true,
   "system": {
     "file_specs": [
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\system01.dbf",
+        "fname": "system01.dbf",
+        "size": "700M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "10240K",
+          "maxsize": "UNLIMITED"
+        }
+      },
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\system02.dbf",
         "fname": "system01.dbf",
         "size": "700M",
         "reuse": "REUSE",
@@ -78,6 +86,17 @@
     "file_specs": [
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux01.dbf",
+        "fname": "sysaux01.dbf",
+        "size": "550M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "10240K",
+          "maxsize": "UNLIMITED"
+        }
+      },
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux02.dbf",
         "fname": "sysaux01.dbf",
         "size": "550M",
         "reuse": "REUSE",
@@ -118,6 +137,16 @@
           "next": "640K",
           "maxsize": "UNLIMITED"
         }
+      },
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\temp02.dbf",
+        "size": "20M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "640K",
+          "maxsize": "UNLIMITED"
+        }
       }
     ],
     "extent_management": {
@@ -130,6 +159,16 @@
     "file_specs": [
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
+        "size": "200M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "5120K",
+          "maxsize": "UNLIMITED"
+        }
+      },
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs02.dbf",
         "size": "200M",
         "reuse": "REUSE",
         "autoextend": {
@@ -154,10 +193,23 @@
           "next": "5120K",
           "maxsize": "UNLIMITED"
         }
+      },
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\user02.dbf",
+        "size": "200M",
+        "reuse": "REUSE",
+        "autoextend": {
+          "mode": "ON",
+          "next": "5120K",
+          "maxsize": "UNLIMITED"
+        }
       }
     ]
   },
   "_": "_",
+  "ps": "\\",
+  "ORACLE_BASE": "C:\\app\\Administrator",
+  "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
   "SID": "orcl",
   "SID_U": "ORCL",
   "DB_BASE": "C:\\app\\Administrator\\oradata\\ORCL",
@@ -167,23 +219,74 @@
   "SCRIPT_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
   "LOG_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
   "dbpara": [
-    [      "nls_language",                 "\"JAPANESE\""    ],
-    [      "nls_territory",                "\"JAPAN\""    ],
-    [      "compatible",                   "19.0.0"    ],
-    [      "diagnostic_dest",              "C:\\app\\Administrator"    ],
-    [      "enable_pluggable_database",    "true"    ],
-    [      "memory_target",                "1638m"    ],
-    [      "open_cursors",                 "300"    ],
-    [      "db_block_size",                "8192"    ],
-    [      "undo_tablespace",              "UNDOTBS1"    ],
-    [      "audit_file_dest",              "\"C:\\app\\Administrator\\admin\\orcl\\adump\""    ],
-    [      "audit_trail",                  "db"    ],
-    [      "remote_login_passwordfile",    "EXCLUSIVE"    ],
-    [      "db_domain",                    "\"world\""    ],
-    [      "db_name",                      "\"orcl\""    ],
-    [      "control_files",                "(\"C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl\", \"C:\\app\\Administrator\\oradata\\ORCL\\control02.ctl\")"    ],
-    [      "processes",                    "320"    ],
-    [      "dispatchers",                  "\"(PROTOCOL=TCP) (SERVICE=orclXDB)\""    ]
+    [
+      "nls_language",
+      "\"JAPANESE\""
+    ],
+    [
+      "nls_territory",
+      "\"JAPAN\""
+    ],
+    [
+      "compatible",
+      "19.0.0"
+    ],
+    [
+      "diagnostic_dest",
+      "C:\\app\\Administrator"
+    ],
+    [
+      "enable_pluggable_database",
+      "true"
+    ],
+    [
+      "memory_target",
+      "1638m"
+    ],
+    [
+      "open_cursors",
+      "300"
+    ],
+    [
+      "db_block_size",
+      "8192"
+    ],
+    [
+      "undo_tablespace",
+      "UNDOTBS1"
+    ],
+    [
+      "audit_file_dest",
+      "\"C:\\app\\Administrator\\admin\\orcl\\adump\""
+    ],
+    [
+      "audit_trail",
+      "db"
+    ],
+    [
+      "remote_login_passwordfile",
+      "EXCLUSIVE"
+    ],
+    [
+      "db_domain",
+      "\"world\""
+    ],
+    [
+      "db_name",
+      "\"orcl\""
+    ],
+    [
+      "control_files",
+      "(\"C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl\", \"C:\\app\\Administrator\\oradata\\ORCL\\control02.ctl\")"
+    ],
+    [
+      "processes",
+      "320"
+    ],
+    [
+      "dispatchers",
+      "\"(PROTOCOL=TCP) (SERVICE=orclXDB)\""
+    ]
   ],
   "ctrl_files": {
     "ctrl1": "C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl",
@@ -289,7 +392,7 @@
       "minimum_extent_size": "8K",
       "blocksize": "16K",
       "logging": "LOGGING",
-      "force_logging": "y",
+      "force_logging": true,
       "tablespace_encryption": {
         "mode": "ENCRYPT",
         "algorithm": "AES128"

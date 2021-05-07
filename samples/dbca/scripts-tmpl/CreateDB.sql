@@ -5,6 +5,9 @@
 {{$maxlogmembers := or .maxlogmembers 3 -}}
 {{$maxdatafiles  := or .maxdatafiles  1024 -}}
 {{/* ================ */ -}}
+{{template "create_database" .}}
+
+{{/*
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
 set echo on
@@ -40,3 +43,4 @@ seed file_name_convert=(
   '{{.UNDO.path}}','{{.SEED_BASE}}\{{.UNDO.fname}}'
   ) LOCAL UNDO ON;
 spool off
+*/}}
