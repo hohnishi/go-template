@@ -47,6 +47,11 @@ CREATE DATABASE "orcl"
   
   
 
+  ENABLE PLUGGABLE DATABASE
+  
+  
+
+
 
 
 

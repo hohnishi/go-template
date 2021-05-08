@@ -206,6 +206,11 @@
       }
     ]
   },
+    "enable_pluggable_database": {
+	"seed": {
+	},
+	"local_undo": "ON"
+    },
   "_": "_",
   "ps": "\\",
   "ORACLE_BASE": "C:\\app\\Administrator",
