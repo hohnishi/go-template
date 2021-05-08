@@ -102,7 +102,7 @@ permanent_tablespace_attrs::=
     | flashback_mode_clause
     | lost_write_protection
   }...
-# "lost_write_protection"はhttps://docs.oracle.com/cd/F39414_01/sqlrf/img_text/permanent_tablespace_attrs.htmlから漏れている
+# "lost_write_protection"$B$O(Bhttps://docs.oracle.com/cd/F39414_01/sqlrf/img_text/permanent_tablespace_attrs.html$B$+$iO3$l$F$$$k(B
 
 logging_clause::=
   {   LOGGING
@@ -434,7 +434,7 @@ create_user::=
     ]... ;
   
 =========================================================================
-<>共通のSQL DDL句
+<>$B6&DL$N(BSQL DDL$B6g(B
 
 ===
 file_specification::=
@@ -522,22 +522,22 @@ file_name_convert::=
 
 =======================================
 database
-・DB_NAME初期化パラメータの値と一致する必要があります。
-・名前の長さは最大8バイトです。
-・ASCII文字のみを指定できます。
-・有効な文字は、英数字、アンダースコア(_)、シャープ記号(#)およびドル記号($)。他の文字は無効です。
-・アルファベットで開始する必要があります。
-・この名前を制御ファイルに書き込みます。
-　データベース名を明示的に指定するALTER DATABASE文を発行すると、
-　制御ファイル内の名前に基づいて、そのデータベース名が検証されます。
-・大文字と小文字が区別されず、大文字のASCII文字で保存されます。
-・データベース名を引用識別子として指定した場合、引用符は特に警告もなく無視されます。
-・CREATE DATABASE文でデータベース名を指定しない場合、DB_NAME初期化パラメータで指定した名前が採用
-・DB_NAME初期化パラメータは、データベースの初期化パラメータ・ファイルに設定する必要があります。
-　そのパラメータの値とは異なる名前を指定した場合、データベースはエラーを戻します。
-　データベース名のその他の規則は、「データベース・オブジェクトのネーミング規則」を参照してください。
+$B!&(BDB_NAME$B=i4|2=%Q%i%a!<%?$NCM$H0lCW$9$kI,MW$,$"$j$^$9!#(B
+$B!&L>A0$ND9$5$O:GBg(B8$B%P%$%H$G$9!#(B
+$B!&(BASCII$BJ8;z$N$_$r;XDj$G$-$^$9!#(B
+$B!&M-8z$JJ8;z$O!"1Q?t;z!"%"%s%@!<%9%3%"(B(_)$B!"%7%c!<%W5-9f(B(#)$B$*$h$S%I%k5-9f(B($)$B!#B>$NJ8;z$OL58z$G$9!#(B
+$B!&%"%k%U%!%Y%C%H$G3+;O$9$kI,MW$,$"$j$^$9!#(B
+$B!&$3$NL>A0$r@)8f%U%!%$%k$K=q$-9~$_$^$9!#(B
+$B!!%G!<%?%Y!<%9L>$rL@<(E*$K;XDj$9$k(BALTER DATABASE$BJ8$rH/9T$9$k$H!"(B
+$B!!@)8f%U%!%$%kFb$NL>A0$K4p$E$$$F!"$=$N%G!<%?%Y!<%9L>$,8!>Z$5$l$^$9!#(B
+$B!&BgJ8;z$H>.J8;z$,6hJL$5$l$:!"BgJ8;z$N(BASCII$BJ8;z$GJ]B8$5$l$^$9!#(B
+$B!&%G!<%?%Y!<%9L>$r0zMQ<1JL;R$H$7$F;XDj$7$?>l9g!"0zMQId$OFC$K7Y9p$b$J$/L5;k$5$l$^$9!#(B
+$B!&(BCREATE DATABASE$BJ8$G%G!<%?%Y!<%9L>$r;XDj$7$J$$>l9g!"(BDB_NAME$B=i4|2=%Q%i%a!<%?$G;XDj$7$?L>A0$,:NMQ(B
+$B!&(BDB_NAME$B=i4|2=%Q%i%a!<%?$O!"%G!<%?%Y!<%9$N=i4|2=%Q%i%a!<%?!&%U%!%$%k$K@_Dj$9$kI,MW$,$"$j$^$9!#(B
+$B!!$=$N%Q%i%a!<%?$NCM$H$O0[$J$kL>A0$r;XDj$7$?>l9g!"%G!<%?%Y!<%9$O%(%i!<$rLa$7$^$9!#(B
+$B!!%G!<%?%Y!<%9L>$N$=$NB>$N5,B'$O!"!V%G!<%?%Y!<%9!&%*%V%8%'%/%H$N%M!<%_%s%05,B'!W$r;2>H$7$F$/$@$5$$!#(B
 
-<>以下未定義
+<>$B0J2<L$Dj5A(B
 
 tablespace_name::=
 tablespace_group_name::=
