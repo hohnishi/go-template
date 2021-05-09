@@ -92,7 +92,7 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
   {{with .set_default_tablespace}}SET DEFAULT {{.}} TABLESPACE{{end}}
 -- <<** database_logging_clauses
   {{- with .logfile}}
-  LOGFILE {{range $i, $_ := .}}{{if ne $i 0}}{{print ","}}{{end}}
+  LOGFILE {{range $i, $_ := .}}{{if ne $i 0}},{{end}}
     GROUP {{.group}} {{template "redo_log_file_spec" .file_spec}}{{end}}{{println ""}}
   {{- end}}
   {{with .maxlogfiles}}MAXLOGFILES {{.}}{{end}}
@@ -104,29 +104,28 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
 -- **>> database_logging_clauses
 -- <<** tablespace_clauses
   {{with .extent_management_local}}EXTENT MANAGEMENT LOCAL{{end}}
-  {{with .system}}DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-  {{with .sysaux}}SYSAUX DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
---   <<** default_tablespace
-  {{with .default_tablespace }} DEFAULT TABLESPACE {{.tbsname}}
-    {{with .file_spec}} DATAFILE {{template "datafile_tempfile_spec" .}}{{end}}
-    {{with .extent_management}} {{template "extent_management_clause" . }}{{end}}
-  {{end}}
---   **>> default_tablespace
---   <<** default_temp_tablespace
+  {{with .system}}DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}},{{end}}
+    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{with .sysaux}}SYSAUX DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}},{{end}}
+    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{with .default_tablespace }}DEFAULT TABLESPACE {{.tbsname}}
+    {{with .file_spec}}DATAFILE {{template "datafile_tempfile_spec" .}}{{end}}
+    {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}
+  {{end -}}
   {{with .default_temp_tablespace }}{{with .filetype -}} {{.}}{{end}} DEFAULT TEMPORARY TABLESPACE {{.tbsname}}
-    {{with .file_specs}} TEMPFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-    {{with .extent_management}} {{template "extent_management_clause" . }}{{end}}
-  {{end}}
---   **>> default_temp_tablespace
---   <<** undo_tablespace
+    {{with .file_specs}}TEMPFILE {{- range $i, $_ := .}}{{ if ne $i 0}},{{end}}
+    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+    {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}
+  {{end -}}
   {{with .undo_tablespace}}{{with .filetype -}} {{.}}{{end}} UNDO TABLESPACE {{.tbsname}}
-    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-  {{end}}
---   **>> undo_tablespace
+    {{with .file_specs}}DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}},{{end}}
+    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{end -}}
 -- **>> tablespace_clauses
   {{with .set_time_zone}}SET TIME_ZONE = '{{.}}'{{end}}
   {{with .user_data_tablespace}}{{with .filetype -}} {{.}}{{end}} USER_DATA TABLESPACE {{.tbsname}}
-    {{with .file_specs}} DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}}{{println ","}}{{end}}{{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+    {{with .file_specs}}DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}},{{end}}
+    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
   {{end}}
   {{template "enable_pluggable_database" .}}
 {{end}}
