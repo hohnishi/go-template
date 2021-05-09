@@ -63,7 +63,7 @@ MAXSIZE {{if eq . "UNLIMITED" -}} UNLIMITED {{- else -}} {{.}} {{end -}}
 {{end -}}
 
 {{define "redo_log_file_spec" -}}
-  ( {{- range $i, $_ := .files}}{{if ne $i 0}}{{print ","}}{{end}} '{{.}}'{{end -}} )
+  ( {{- range $i, $_ := .paths}}{{if ne $i 0}}{{print ","}}{{end}} '{{.}}'{{end -}} )
   {{- with .size }} SIZE {{.}}{{end -}}
   {{- with .blocksize}} BLOCKSIZE {{.}}{{end -}}
   {{- with .reuse }} {{.}}{{end -}}

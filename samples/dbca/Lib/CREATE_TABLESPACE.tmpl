@@ -24,7 +24,7 @@ CREATE {{with .filetype -}} {{.}} {{end}}
 ================================================
 permanent_tablespace_clause::= 
   TABLESPACE tablespace             # tbsname
-  [ DATAFILE file_specification [, file_specification ]... ] # file_specs
+  [ DATAFILE file_specification(=datafile_tempfile_spec) [, file_specification(=datafile_tempfile_spec) ]... ] # file_specs
   [ permanent_tablespace_attrs ]
   [ IN SHARDSPACE shardspace ]      # shardspace
 
@@ -92,7 +92,7 @@ temporary_tablespace_clause::=
     | { LOCAL TEMPORARY TABLESPACE FOR { ALL | LEAF } }  # No support local temp tbs
   }
   tablespace
-  [ TEMPFILE file_specification [, file_specification ]... ]
+  [ TEMPFILE file_specification(=datafile_tempfile_spec) [, file_specification(=datafile_tempfile_spec) ]... ]
   [ tablespace_group_clause ]
   [ extent_management_clause ]
 
@@ -114,7 +114,7 @@ TEMPORARY TABLESPACE "{{.tbsname}}"
 ================================================
 undo_tablespace_clause::=
   UNDO TABLESPACE tablespace
-    [ DATAFILE file_specification [, file_specification ]... ]
+    [ DATAFILE file_specification(=datafile_tempfile_spec) [, file_specification(=datafile_tempfile_spec) ]... ]
     [ extent_management_clause ]
     [ tablespace_retention_clause ]
     [ tablespace_encryption_clause ]

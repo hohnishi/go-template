@@ -8,11 +8,11 @@
   "charset": "AL32UTF8",
   "nscharset": "AL16UTF16",
   "set_default_tablespace": "SMALLFILE",
-  "log_files": [
+  "logfile": [
     {
       "group": 1,
-      "redo_log_file_spec": {
-        "files": [
+      "file_spec": {
+        "paths": [
           "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log",
           "C:\\app\\Administrator\\oradata\\ORCL\\redo02.log",
           "C:\\app\\Administrator\\oradata\\ORCL\\redo03.log"
@@ -24,8 +24,8 @@
     },
     {
       "group": 2,
-      "redo_log_file_spec": {
-        "files": [
+      "file_spec": {
+        "paths": [
           "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log",
           "C:\\app\\Administrator\\oradata\\ORCL\\redo02.log",
           "C:\\app\\Administrator\\oradata\\ORCL\\redo03.log"
@@ -37,8 +37,8 @@
     },
     {
       "group": 3,
-      "redo_log_file_spec": {
-        "files": [
+      "file_spec": {
+        "paths": [
           "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log",
           "C:\\app\\Administrator\\oradata\\ORCL\\redo02.log",
           "C:\\app\\Administrator\\oradata\\ORCL\\redo03.log"
@@ -206,11 +206,11 @@
       }
     ]
   },
-    "enable_pluggable_database": {
-	"seed": {
-	},
-	"local_undo": "ON"
+  "enable_pluggable_database": {
+    "seed": {
     },
+    "local_undo": "ON"
+  },
   "_": "_",
   "ps": "\\",
   "ORACLE_BASE": "C:\\app\\Administrator",
