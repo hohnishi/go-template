@@ -208,8 +208,26 @@
   },
   "enable_pluggable_database": {
     "seed": {
+      "file_name_convert": {
+      },
+      "system": {
+        "size": "5M",
+        "autoextend": {
+          "mode": "ON",
+          "next": "1280K",
+          "maxsize": "UNLIMITED"
+        }
+      },
+      "sysaux": {
+        "size": "5M",
+        "autoextend": {
+          "mode": "ON",
+          "next": "1280K",
+          "maxsize": "UNLIMITED"
+        }
+      }
     },
-    "local_undo": "ON"
+    "undo_mode": "ON"
   },
   "_": "_",
   "ps": "\\",
