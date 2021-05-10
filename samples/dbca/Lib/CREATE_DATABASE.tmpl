@@ -126,7 +126,7 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
   {{with .user_data_tablespace}}{{with .filetype -}} {{.}}{{end}} USER_DATA TABLESPACE {{.tbsname}}
     {{with .file_specs}}DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}},{{end}}
     {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-  {{end}}
+  {{end -}}
   {{template "enable_pluggable_database" .}}
 {{end}}
 
@@ -135,13 +135,13 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
   ENABLE PLUGGABLE DATABASE
   {{with .seed}} SEED
     {{with .file_name_convert}}{{end}}
-    {{with .system}}SYSTEM {{template "tablespace_datafile_clause" .}}{{end}}
-    {{with .sysaux}}SYSAUX {{template "tablespace_datafile_clause" .}}{{end}}
-  {{end}}
+    {{- with .system}}SYSTEM {{template "tablespace_datafile_clause" .}}{{end -}}
+    {{- with .sysaux}}SYSAUX {{template "tablespace_datafile_clause" .}}{{end -}}
+  {{end -}}
   {{with .undo_mode}}LOCAL UNDO {{.}}{{end}}
 {{end}}
 {{end}}
 
-{{define "tablespace_datafile_clause"}}
-  DATAFILE xxxxx
+{{define "tablespace_datafile_clause" -}}
+  DATAFILE {{with .size}}{{.}}{{end}} {{with .autoextend}}{{template "autoextend_clause" .}}{{end}}
 {{end}}
