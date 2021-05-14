@@ -91,7 +91,7 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
   {{with .nscharset}}NATIONAL CHARACTER SET {{.}}{{end}}
   {{with .set_default_tablespace}}SET DEFAULT {{.}} TABLESPACE{{end}}
 {{/* database_logging_clauses */}}
-  {{with .logfile}}LOGFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}    GROUP {{.group}} {{template "redo_log_file_spec" .file_spec}}{{end}}{{end}}
+  {{with .logfile}}LOGFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}    {{with .group}}GROUP {{.}}{{end}} {{template "redo_log_file_spec" .file_spec}}{{end}}{{end}}
   {{with .maxlogfiles}}MAXLOGFILES {{.}}{{end}}
   {{with .maxlogmembers}}MAXLOGMEMBERS {{.}}{{end}}
   {{with .maxloghistory}}MAXLOGHISTORY {{.}}{{end}}

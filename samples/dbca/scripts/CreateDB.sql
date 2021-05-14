@@ -7,20 +7,18 @@ CREATE DATABASE "orcl"
   CHARACTER SET AL32UTF8
   NATIONAL CHARACTER SET AL16UTF16
   SET DEFAULT SMALLFILE TABLESPACE
--- <<** database_logging_clauses
-  LOGFILE 
-    GROUP 1 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log') SIZE 200M BLOCKSIZE 16K REUSE,
-    GROUP 2 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log') SIZE 200M BLOCKSIZE 16K REUSE,
-    GROUP 3 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log') SIZE 200M BLOCKSIZE 16K REUSE
 
+  LOGFILE
+    GROUP 1 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log' ) SIZE 200M BLOCKSIZE 16K REUSE,
+    GROUP 2 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log' ) SIZE 200M BLOCKSIZE 16K REUSE,
+    GROUP 3 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log' ) SIZE 200M BLOCKSIZE 16K REUSE
   MAXLOGFILES 16
   MAXLOGMEMBERS 3
   MAXLOGHISTORY 1
   ARCHIVELOG
   FORCE LOGGING
   SET STANDBY NOLOGGING FOR DATA AVAILABILITY
--- **>> database_logging_clauses
--- <<** tablespace_clauses
+
   EXTENT MANAGEMENT LOCAL
   DATAFILE
      'C:\app\Administrator\oradata\ORCL\system01.dbf' SIZE 700M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED,

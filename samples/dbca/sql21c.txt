@@ -1,5 +1,13 @@
 # from 21c SQL Ref manual
 =========================================================================
+[ A ]        : - or A
+[ A ]...     : - or A or AA or AAA or ...
+[ A | B ]    : - or A or B
+
+{ A }        : A
+{ A }...     : A or AA or AAA or ...
+{ A | B }    : A or B
+========================================================================
 create database::=
 CREATE DATABASE [ database ]
   {   USER SYS IDENTIFIED BY password
