@@ -1,4 +1,5 @@
 {{/*
+# based on 19c
 ================================================
 create database::=
 CREATE DATABASE [ database ]
@@ -16,6 +17,7 @@ CREATE DATABASE [ database ]
     | [ BIGFILE | SMALLFILE ] USER_DATA TABLESPACE tablespace_name
         DATAFILE datafile_tempfile_spec [, datafile_tempfile_spec ]...
     | enable_pluggable_database
+    | new_database_name USING MIRROR COPY mirror_name  # No support mirror copy
   }... ;
 
 database_logging_clauses::=
@@ -25,7 +27,7 @@ database_logging_clauses::=
   | MAXLOGHISTORY integer
   | { ARCHIVELOG | NOARCHIVELOG }
   | FORCE LOGGING
-  | SET STANDBY NOLOGGING FOR {DATA AVAILABILITY | LOAD PERFORMANCE}
+  | SET STANDBY NOLOGGING FOR {DATA AVAILABILITY | LOAD PERFORMANCE}   # 11.2 not exist
 };
 
 tablespace_clauses::=
@@ -96,38 +98,37 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
   {{with .maxlogmembers}}MAXLOGMEMBERS {{.}}{{end}}
   {{with .maxloghistory}}MAXLOGHISTORY {{.}}{{end}}
   {{with .archivelog_mode}}{{.}}{{end}}
-  {{with .force_logging}}{{.}}{{end}}
-  {{with .standby_nologging}}SET STANDBY NOLOGGING FOR {{.}}{{end}}
+  {{with .force_logging}}FORCE LOGGING{{end}}
+  {{with .standby_nologging_mode}}SET STANDBY NOLOGGING FOR {{.}}{{end}}
 {{/* tablespace_clauses */}}
-  {{with .extent_management_local}}EXTENT MANAGEMENT LOCAL{{end}}
-  {{with .system}}DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}},{{end}}
-    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-  {{with .sysaux}}SYSAUX DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}},{{end}}
-    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{with .extent_management}}EXTENT MANAGEMENT LOCAL{{end}}
+  {{with .system}}DATAFILE{{println ""}}{{range $i, $_ := .file_specs}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{with .sysaux}}SYSAUX DATAFILE{{println ""}}{{range $i, $_ := .file_specs}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+{{/* default_tablespace */}}
   {{with .default_tablespace }}DEFAULT TABLESPACE {{.tbsname}}
-    {{with .file_spec}}DATAFILE {{template "datafile_tempfile_spec" .}}{{end}}
+    {{with .file_spec}}DATAFILE{{println ""}}    {{template "datafile_tempfile_spec" .}}{{end}}
     {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}
   {{end -}}
+{{/* default_temp_tablespace */}}
   {{with .default_temp_tablespace }}{{with .filetype -}} {{.}}{{end}} DEFAULT TEMPORARY TABLESPACE {{.tbsname}}
-    {{with .file_specs}}TEMPFILE {{- range $i, $_ := .}}{{ if ne $i 0}},{{end}}
+    {{with .file_specs}}TEMPFILE{{range $i, $_ := .}}{{if $i}},{{end}}
     {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
     {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}
   {{end -}}
+{{/* undo_tablespace */}}
   {{with .undo_tablespace}}{{with .filetype -}} {{.}}{{end}} UNDO TABLESPACE {{.tbsname}}
-    {{with .file_specs}}DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}},{{end}}
+    {{with .file_specs}}DATAFILE{{range $i, $_ := .}}{{if $i}},{{end}}
     {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
   {{end -}}
--- **>> tablespace_clauses
+{{/* set_time_zone_clauses */}}
   {{with .set_time_zone}}SET TIME_ZONE = '{{.}}'{{end}}
+{{/* */}}
   {{with .user_data_tablespace}}{{with .filetype -}} {{.}}{{end}} USER_DATA TABLESPACE {{.tbsname}}
-    {{with .file_specs}}DATAFILE {{- range $i, $_ := .}}{{ if ne $i 0}},{{end}}
+    {{with .file_specs}}DATAFILE{{range $i, $_ := .}}{{if $i}},{{end}}
     {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
   {{end -}}
-  {{template "enable_pluggable_database" .}}
-{{end}}
-
-{{define "enable_pluggable_database"}}
-{{with .enable_pluggable_database}}
+{{/* enable_pluggable_database */}}
+  {{with .enable_pluggable_database}}
   ENABLE PLUGGABLE DATABASE
   {{with .seed}} SEED
     {{with .file_name_convert}}{{end}}
@@ -135,7 +136,7 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
     {{- with .sysaux}}SYSAUX {{template "tablespace_datafile_clause" .}}{{end -}}
   {{end -}}
   {{with .undo_mode}}LOCAL UNDO {{.}}{{end}}
-{{end}}
+  {{end}}
 {{end}}
 
 {{define "tablespace_datafile_clause" -}}

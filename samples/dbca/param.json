@@ -53,9 +53,9 @@
   "maxlogmembers": 3,
   "maxloghistory": 1,
   "archivelog_mode": "ARCHIVELOG",
-  "force_logging": "FORCE LOGGING",
-  "standby_nologging": "DATA AVAILABILITY",
-  "extent_management_local": true,
+  "force_logging": true,
+  "standby_nologging_mode": "DATA AVAILABILITY",
+  "extent_management": true,
   "system": {
     "file_specs": [
       {
