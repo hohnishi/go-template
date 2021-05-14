@@ -90,19 +90,15 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
   {{with .charset}}CHARACTER SET {{.}}{{end}}
   {{with .nscharset}}NATIONAL CHARACTER SET {{.}}{{end}}
   {{with .set_default_tablespace}}SET DEFAULT {{.}} TABLESPACE{{end}}
--- <<** database_logging_clauses
-  {{- with .logfile}}
-  LOGFILE {{range $i, $_ := .}}{{if ne $i 0}},{{end}}
-    GROUP {{.group}} {{template "redo_log_file_spec" .file_spec}}{{end}}{{println ""}}
-  {{- end}}
+{{/* database_logging_clauses */}}
+  {{with .logfile}}LOGFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}    GROUP {{.group}} {{template "redo_log_file_spec" .file_spec}}{{end}}{{end}}
   {{with .maxlogfiles}}MAXLOGFILES {{.}}{{end}}
   {{with .maxlogmembers}}MAXLOGMEMBERS {{.}}{{end}}
   {{with .maxloghistory}}MAXLOGHISTORY {{.}}{{end}}
   {{with .archivelog_mode}}{{.}}{{end}}
   {{with .force_logging}}{{.}}{{end}}
   {{with .standby_nologging}}SET STANDBY NOLOGGING FOR {{.}}{{end}}
--- **>> database_logging_clauses
--- <<** tablespace_clauses
+{{/* tablespace_clauses */}}
   {{with .extent_management_local}}EXTENT MANAGEMENT LOCAL{{end}}
   {{with .system}}DATAFILE {{- range $i, $_ := .file_specs}}{{ if ne $i 0}},{{end}}
     {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
