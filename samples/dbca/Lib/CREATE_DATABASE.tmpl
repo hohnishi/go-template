@@ -123,7 +123,7 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
 {{/* enable_pluggable_database */}}
   {{with .enable_pluggable_database}}ENABLE PLUGGABLE DATABASE
   {{with .seed}}SEED
-    FILE_NAME_CONVERT = {{with .file_name_convert}}({{println ""}}{{range $i, $_ := .patterns}}{{if $i}}{{println ", "}}{{end}}      '{{.path}}', '{{.replace_path}}'{{end}}
+    FILE_NAME_CONVERT = {{with .file_name_convert}}({{println ""}}{{range $i, $_ := .patterns}}{{if $i}}{{println ","}}{{end}}      '{{.path}}', '{{.replace_path}}'{{end}}
     ){{else}}NONE{{end}}
     {{with .system}}SYSTEM {{template "tablespace_datafile_clause" .}}{{end}}
     {{with .sysaux}}SYSAUX {{template "tablespace_datafile_clause" .}}{{end}}{{end}}
