@@ -1,3 +1,9 @@
+
+SET VERIFY OFF
+connect "SYS"/"&&sysPassword" as SYSDBA
+set echo on
+spool C:\app\Administrator\admin\orcl\scripts\CreateDB.log append
+startup nomount pfile="C:\app\Administrator\admin\orcl\scripts\init.ora";
 CREATE DATABASE "orcl"
   USER SYS IDENTIFIED BY "manager"
   USER SYSTEM IDENTIFIED BY "manager"
@@ -50,7 +56,7 @@ CREATE DATABASE "orcl"
   ENABLE PLUGGABLE DATABASE
   SEED
     FILE_NAME_CONVERT = (
-      '/u01/app/oracle/oradata/cdb/system01.dbf', '/u01/app/oracle/oradata/pdbseed/system01.dbf', 
+      '/u01/app/oracle/oradata/cdb/system01.dbf', '/u01/app/oracle/oradata/pdbseed/system01.dbf',
       '/u01/app/oracle/oradata/cdb/', '/u01/app/oracle/oradata/pdbseed/'
     )
     SYSTEM DATAFILES SIZE 5M AUTOEXTEND ON NEXT 1280K MAXSIZE UNLIMITED
@@ -58,5 +64,4 @@ CREATE DATABASE "orcl"
   LOCAL UNDO ON
 ;
 
-
-
+spool off
