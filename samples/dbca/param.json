@@ -241,6 +241,81 @@
     "local_undo": "ON"
   },
   "_": "_",
+  "tbss": [
+    {
+      "type": "perm",
+      "filetype": "SMALLFILE",
+      "tbsname": "DBCA-USERS",
+      "file_specs": [
+        {
+          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
+          "size": "5M",
+          "reuse": true,
+          "autoextend": {
+            "mode": "ON",
+            "next": "1280K",
+            "maxsize": "UNLIMITED"
+          }
+        }
+      ],
+      "logging": "LOGGING",
+      "extent_management": {
+        "mode": ""
+      },
+      "segment_management": {
+        "mode": "AUTO"
+      }
+    },
+    {
+      "type": "perm",
+      "filetype": "SMALLFILE",
+      "tbsname": "FULLOPT",
+      "file_specs": [
+        {
+          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
+          "size": "5M",
+          "reuse": true,
+          "autoextend": {
+            "mode": "ON",
+            "next": "1280K",
+            "maxsize": "UNLIMITED"
+          }
+        },
+        {
+          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
+          "size": "5M",
+          "reuse": true,
+          "autoextend": {
+            "mode": "OFF"
+          }
+        }
+      ],
+      "minimum_extent_size": "8K",
+      "blocksize": "16K",
+      "logging": "LOGGING",
+      "force_logging": true,
+      "tablespace_encryption": {
+        "mode": "ENCRYPT",
+        "algorithm": "AES128"
+      },
+      "default_tablespace_params": "TBD",
+      "on_offline": "ONLINE",
+      "extent_management": {
+        "uniformsize": "1M"
+      },
+      "segment_management": {
+        "mode": "AUTO"
+      },
+      "flashback_mode": {
+        "mode": "ON"
+      },
+      "lost_write_protection": {
+        "mode": "ENABLE"
+      },
+      "shardspace": "NAME"
+    }
+  ],
+  "_": "_",
   "ps": "\\",
   "ORACLE_BASE": "C:\\app\\Administrator",
   "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
@@ -373,79 +448,5 @@
         }
       }
     ]
-  },
-  "tbss": {
-    "e1": {
-      "type": "perm",
-      "filetype": "SMALLFILE",
-      "tbsname": "DBCA-USERS",
-      "file_specs": [
-        {
-          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
-          "size": "5M",
-          "reuse": true,
-          "autoextend": {
-            "mode": "ON",
-            "next": "1280K",
-            "maxsize": "UNLIMITED"
-          }
-        }
-      ],
-      "logging": "LOGGING",
-      "extent_management": {
-        "mode": ""
-      },
-      "segment_management": {
-        "mode": "AUTO"
-      }
-    },
-    "e2": {
-      "type": "perm",
-      "filetype": "SMALLFILE",
-      "tbsname": "FULLOPT",
-      "file_specs": [
-        {
-          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
-          "size": "5M",
-          "reuse": true,
-          "autoextend": {
-            "mode": "ON",
-            "next": "1280K",
-            "maxsize": "UNLIMITED"
-          }
-        },
-        {
-          "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
-          "size": "5M",
-          "reuse": true,
-          "autoextend": {
-            "mode": "OFF"
-          }
-        }
-      ],
-      "minimum_extent_size": "8K",
-      "blocksize": "16K",
-      "logging": "LOGGING",
-      "force_logging": true,
-      "tablespace_encryption": {
-        "mode": "ENCRYPT",
-        "algorithm": "AES128"
-      },
-      "default_tablespace_params": "TBD",
-      "on_offline": "ONLINE",
-      "extent_management": {
-        "uniformsize": "1M"
-      },
-      "segment_management": {
-        "mode": "AUTO"
-      },
-      "flashback_mode": {
-        "mode": "ON"
-      },
-      "lost_write_protection": {
-        "mode": "ENABLE"
-      },
-      "shardspace": "NAME"
-    }
   }
 }
