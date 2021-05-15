@@ -35,7 +35,7 @@ permanent_tablespace_attrs::=
     | logging_clause                # logging is nil | LOGGING | NOLOGGING | FILESYSTEM_LIKE_LOGGING
     | FORCE LOGGING                 # force_logging
     | tablespace_encryption_clause
-    | default_tablespace_params
+    | default_tablespace_params     # no support yet
     | { ONLINE | OFFLINE }
     | extent_management_clause
     | segment_management_clause
@@ -56,32 +56,25 @@ tablespace_encryption_spec::=
 {{define "permanent_tablespace_clause" -}}
 TABLESPACE "{{.tbsname}}"
   {{with .file_specs}}DATAFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-{{/* permanent_tablespace_attrs */}}
-  {{with .minimum_extent_size}} MINIMUM EXTENT {{.}}{{end -}}
-  {{with .blocksize}} BLOCKSIZE {{.}}{{end -}}
-  {{with .logging}} {{template "logging_clause" . }}{{end -}}
-  {{with .force_logging}} FORCE LOGGING{{end -}}
-  {{with .tablespace_encryption}} {{template "tablespace_encryption_clause" . }}{{end -}}
-  {{with .default_tablespace_params}} {{template "default_tablespace_params" . }}{{end -}}
-  {{with .on_offline}} {{.}}{{end -}}
-  {{with .extent_management}} {{template "extent_management_clause" . }}{{end -}}
-  {{with .segment_management}} {{template "segment_management_clause" . }}{{end -}}
-  {{with .flashback_mode}} {{template "flashback_mode_clause" . }}{{end -}}
-  {{with .lost_write_protection}} {{template "lost_write_protection" . }}{{end -}}
-{{/* shardspace */}}
-  {{with .shardspace}} IN SHARDSPACE {{.}}{{end}}
-{{- end -}}
+  {{with .minimum_extent_size}}MINIMUM EXTENT {{.}}{{end}}
+  {{with .blocksize}}BLOCKSIZE {{.}}{{end}}
+  {{with .logging}}{{template "logging_clause" . }}{{end}}
+  {{with .force_logging}}FORCE LOGGING{{end}}
+  {{with .tablespace_encryption}}{{template "tablespace_encryption_clause" . }}{{end}}
+  {{- /* with .default_tablespace_params}}{{template "default_tablespace_params" . }}{{end */ -}}
+  {{with .on_offline}}  {{.}}{{end}}
+  {{with .extent_management}}{{template "extent_management_clause" . }}{{end}}
+  {{with .segment_management}}{{template "segment_management_clause" . }}{{end}}
+  {{with .flashback_mode}}{{template "flashback_mode_clause" . }}{{end}}
+  {{with .lost_write_protection}}{{template "lost_write_protection" . }}{{end}}
+  {{with .shardspace}}IN SHARDSPACE {{.}}{{end}}
+{{end}}
 
 {{define "logging_clause"}}{{.}}{{end}}
 
 {{define "tablespace_encryption_clause" -}}
-ENCRYPTION
-  {{- if eq .mode "ENCRYPT" -}}
-    {{with .algorithm}} USING '{{.}}'{{end}} ENCRYPT
-  {{- else -}}
-    DECRYPT
-  {{- end -}}
-{{- end -}}
+ENCRYPTION{{if eq .mode "ENCRYPT"}}{{with .algorithm}} USING '{{.}}'{{end}} ENCRYPT{{else}} DECRYPT{{end}}
+{{end}}
 
 {{define "default_tablespace_params" -}}
 {{- /* TBD: "default_tablespace_params" */ -}}
