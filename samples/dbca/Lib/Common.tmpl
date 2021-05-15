@@ -6,10 +6,10 @@ extent_management_clause::=
   "extent_management" : {
     "mode" : "" | "mode" : "AUTOALLOCATE" | "unformsize" : "1M"
   }
- -}}
+------------------------------------------------
 */ -}}
 {{define "extent_management_clause" -}}
-EXTENT MANAGEMENT LOCAL{{with .mode}} {{.}}{{end}}{{with .uniformsize}} UNIFORM {{.}}{{end -}}
+  EXTENT MANAGEMENT LOCAL{{with .mode}} {{.}}{{end}}{{with .uniformsize}} UNIFORM {{.}}{{end -}}
 {{end}}
 {{/*
 ================================================
@@ -31,7 +31,19 @@ autoextend_clause::=
    {  OFF
     | ON [ NEXT size_clause ] [ maxsize_clause ]
    }
-
+--------------------------------
+  {
+    "path": - | "C:\\app\\Administrator\\oradata\\ORCL\\sysaux02.dbf",
+    "fname": - | "sysaux01.dbf",  # not need?
+    "size": - | "550M",
+    "reuse": - | true | false,
+    "autoextend": - | {
+      "mode": "ON" | "OFF",
+      "next": - | "10240K",
+      "maxsize": - | "UNLIMITED" | "10G"
+    }
+  }
+--------------------------------
 redo_log_file_spec::=
   [   'filename | asm_filename'
     | (  'filename | asm_filename'
@@ -41,12 +53,23 @@ redo_log_file_spec::=
   [ SIZE size_clause ]
   [ BLOCKSIZE size_clause ]
   [ REUSE ]
+--------------------------------
+  {
+    "paths": - | [ "C:\\app\\Administrator\\oradata\\ORCL\\redo01.log", ...],
+    "size": - | "550M",
+    "blocksize": - | "16K",
+    "reuse": - | true | false,
+  }
+  {
+    "path": - | "C:\\app\\Administrator\\oradata\\ORCL\\sysaux02.dbf",
+    "fname": - | "sysaux01.dbf",  # not need?
+  }
 ------------------------------------------------
 */ -}}
 {{define "datafile_tempfile_spec" -}}
   {{- with .path }} '{{.}}'{{end -}}
   {{- with .size }} SIZE {{.}}{{end -}}
-  {{- with .reuse }} {{.}}{{end -}}
+  {{- with .reuse }} REUSE{{end -}}
   {{- with .autoextend }} {{template "autoextend_clause" . -}} {{end -}}
 {{end -}}
 
@@ -59,5 +82,5 @@ MAXSIZE {{if eq . "UNLIMITED" -}} UNLIMITED {{- else -}} {{.}} {{end -}}
 {{end -}}
 
 {{define "redo_log_file_spec" -}}
-  ( {{range $i, $_ := .paths}}{{if $i}}{{print ", "}}{{end}}'{{.}}'{{end}} ){{with .size }} SIZE {{.}}{{end}}{{with .blocksize}} BLOCKSIZE {{.}}{{end}}{{with .reuse }} {{.}}{{end -}}
+  ( {{range $i, $_ := .paths}}{{if $i}}{{print ", "}}{{end}}'{{.}}'{{end}} ){{with .size }} SIZE {{.}}{{end}}{{with .blocksize}} BLOCKSIZE {{.}}{{end}}{{with .reuse }} REUSE{{end -}}
 {{end -}}

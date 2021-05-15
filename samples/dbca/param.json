@@ -19,7 +19,7 @@
         ],
         "size": "200M",
         "blocksize": "16K",
-        "reuse": "REUSE"
+        "reuse": true
       }
     },
     {
@@ -32,7 +32,7 @@
         ],
         "size": "200M",
         "blocksize": "16K",
-        "reuse": "REUSE"
+        "reuse": true
       }
     },
     {
@@ -45,7 +45,7 @@
         ],
         "size": "200M",
         "blocksize": "16K",
-        "reuse": "REUSE"
+        "reuse": true
       }
     }
   ],
@@ -62,7 +62,7 @@
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\system01.dbf",
         "fname": "system01.dbf",
         "size": "700M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "10240K",
@@ -73,7 +73,7 @@
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\system02.dbf",
         "fname": "system01.dbf",
         "size": "700M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "10240K",
@@ -88,7 +88,7 @@
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux01.dbf",
         "fname": "sysaux01.dbf",
         "size": "550M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "10240K",
@@ -99,7 +99,7 @@
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\sysaux02.dbf",
         "fname": "sysaux01.dbf",
         "size": "550M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "10240K",
@@ -113,7 +113,7 @@
     "file_spec": {
       "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
       "size": "5M",
-      "reuse": "REUSE",
+      "reuse": true,
       "autoextend": {
         "mode": "ON",
         "next": "1280K",
@@ -131,7 +131,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\temp01.dbf",
         "size": "20M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "640K",
@@ -141,7 +141,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\temp02.dbf",
         "size": "20M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "640K",
@@ -160,7 +160,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs01.dbf",
         "size": "200M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "5120K",
@@ -170,7 +170,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\undotbs02.dbf",
         "size": "200M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "5120K",
@@ -187,7 +187,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\user01.dbf",
         "size": "200M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "5120K",
@@ -197,7 +197,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\user02.dbf",
         "size": "200M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "5120K",
@@ -209,6 +209,16 @@
   "enable_pluggable_database": {
     "seed": {
       "file_name_convert": {
+        "patterns": [
+          {
+            "path": "/u01/app/oracle/oradata/cdb/system01.dbf",
+            "replace_path": "/u01/app/oracle/oradata/pdbseed/system01.dbf"
+          },
+          {
+            "path": "/u01/app/oracle/oradata/cdb/",
+            "replace_path": "/u01/app/oracle/oradata/pdbseed/"
+          }
+        ]
       },
       "system": {
         "size": "5M",
@@ -227,7 +237,7 @@
         }
       }
     },
-    "undo_mode": "ON"
+    "local_undo": "ON"
   },
   "_": "_",
   "ps": "\\",
@@ -330,7 +340,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
         "size": "5M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "ON",
           "next": "1280K",
@@ -340,7 +350,7 @@
       {
         "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
         "size": "5M",
-        "reuse": "REUSE",
+        "reuse": true,
         "autoextend": {
           "mode": "OFF"
         }
@@ -372,7 +382,7 @@
         {
           "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
           "size": "5M",
-          "reuse": "REUSE",
+          "reuse": true,
           "autoextend": {
             "mode": "ON",
             "next": "1280K",
@@ -396,7 +406,7 @@
         {
           "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
           "size": "5M",
-          "reuse": "REUSE",
+          "reuse": true,
           "autoextend": {
             "mode": "ON",
             "next": "1280K",
@@ -406,7 +416,7 @@
         {
           "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
           "size": "5M",
-          "reuse": "REUSE",
+          "reuse": true,
           "autoextend": {
             "mode": "OFF"
           }

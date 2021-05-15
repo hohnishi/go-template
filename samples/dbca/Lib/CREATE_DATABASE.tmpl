@@ -103,42 +103,34 @@ CREATE DATABASE {{with .database -}}"{{.}}"{{end}}
 {{/* tablespace_clauses */}}
   {{with .extent_management}}EXTENT MANAGEMENT LOCAL{{end}}
   {{with .system}}DATAFILE{{println ""}}{{range $i, $_ := .file_specs}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-  {{with .sysaux}}SYSAUX DATAFILE{{println ""}}{{range $i, $_ := .file_specs}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+  {{with .sysaux}}SYSAUX DATAFILE{{println ""}}{{range $i, $_ := .file_specs}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end -}}
 {{/* default_tablespace */}}
   {{with .default_tablespace }}DEFAULT TABLESPACE {{.tbsname}}
-    {{with .file_spec}}DATAFILE{{println ""}}    {{template "datafile_tempfile_spec" .}}{{end}}
-    {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}
-  {{end -}}
+    {{with .file_spec}}DATAFILE{{println ""}}     {{template "datafile_tempfile_spec" .}}{{end}}
+    {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}{{end -}}
 {{/* default_temp_tablespace */}}
-  {{with .default_temp_tablespace }}{{with .filetype -}} {{.}}{{end}} DEFAULT TEMPORARY TABLESPACE {{.tbsname}}
-    {{with .file_specs}}TEMPFILE{{range $i, $_ := .}}{{if $i}},{{end}}
-    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-    {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}
-  {{end -}}
+  {{with .default_temp_tablespace }}{{with .filetype}}{{.}} {{end}}DEFAULT TEMPORARY TABLESPACE {{.tbsname}}
+    {{with .file_specs}}TEMPFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}     {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
+    {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}{{end -}}
 {{/* undo_tablespace */}}
-  {{with .undo_tablespace}}{{with .filetype -}} {{.}}{{end}} UNDO TABLESPACE {{.tbsname}}
-    {{with .file_specs}}DATAFILE{{range $i, $_ := .}}{{if $i}},{{end}}
-    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-  {{end -}}
+  {{with .undo_tablespace}}{{with .filetype}}{{.}} {{end}}UNDO TABLESPACE {{.tbsname}}
+    {{with .file_specs}}DATAFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}     {{template "datafile_tempfile_spec" .}}{{end}}{{end}}{{end}}
 {{/* set_time_zone_clauses */}}
   {{with .set_time_zone}}SET TIME_ZONE = '{{.}}'{{end}}
-{{/* */}}
-  {{with .user_data_tablespace}}{{with .filetype -}} {{.}}{{end}} USER_DATA TABLESPACE {{.tbsname}}
-    {{with .file_specs}}DATAFILE{{range $i, $_ := .}}{{if $i}},{{end}}
-    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
-  {{end -}}
+{{/* USER DATA TABLESPACE */}}
+  {{with .user_data_tablespace}}{{with .filetype}}{{.}}{{end}} USER_DATA TABLESPACE {{.tbsname}}
+    {{with .file_specs}}DATAFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}{{end}}
 {{/* enable_pluggable_database */}}
-  {{with .enable_pluggable_database}}
-  ENABLE PLUGGABLE DATABASE
-  {{with .seed}} SEED
-    {{with .file_name_convert}}{{end}}
-    {{- with .system}}SYSTEM {{template "tablespace_datafile_clause" .}}{{end -}}
-    {{- with .sysaux}}SYSAUX {{template "tablespace_datafile_clause" .}}{{end -}}
-  {{end -}}
-  {{with .undo_mode}}LOCAL UNDO {{.}}{{end}}
-  {{end}}
+  {{with .enable_pluggable_database}}ENABLE PLUGGABLE DATABASE
+  {{with .seed}}SEED
+    FILE_NAME_CONVERT = {{with .file_name_convert}}({{println ""}}{{range $i, $_ := .patterns}}{{if $i}}{{println ", "}}{{end}}      '{{.path}}', '{{.replace_path}}'{{end}}
+    ){{else}}NONE{{end}}
+    {{with .system}}SYSTEM {{template "tablespace_datafile_clause" .}}{{end}}
+    {{with .sysaux}}SYSAUX {{template "tablespace_datafile_clause" .}}{{end}}{{end}}
+  {{with .local_undo}}LOCAL UNDO {{.}}{{end}}{{end}}
+;
 {{end}}
 
 {{define "tablespace_datafile_clause" -}}
-  DATAFILE {{with .size}}{{.}}{{end}} {{with .autoextend}}{{template "autoextend_clause" .}}{{end}}
+  DATAFILES{{with .size }} SIZE {{.}}{{end}}{{with .autoextend }} {{template "autoextend_clause" .}}{{end -}}
 {{end}}
