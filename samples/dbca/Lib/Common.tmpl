@@ -67,7 +67,7 @@ redo_log_file_spec::=
 ------------------------------------------------
 */ -}}
 {{define "datafile_tempfile_spec" -}}
-  {{- with .path }} '{{.}}'{{end -}}
+  {{- with .path }}'{{.}}'{{end -}}
   {{- with .size }} SIZE {{.}}{{end -}}
   {{- with .reuse }} REUSE{{end -}}
   {{- with .autoextend }} {{template "autoextend_clause" . -}} {{end -}}
