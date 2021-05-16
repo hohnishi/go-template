@@ -240,7 +240,7 @@
     },
     "local_undo": "ON"
   },
-  "_": "_",
+  "_": "CREATE_TABLESPACE.tmpl",
   "tbss": [
     {
       "type": "perm",
@@ -312,7 +312,7 @@
       "lost_write_protection": {
         "mode": "ENABLE"
       },
-      "shardspace": "NAME"
+      "shardspace": "ssname"
     }
   ],
   "_": "_",
@@ -434,7 +434,7 @@
     ]
   },
   "pdbTbs": {
-    "type": "user",
+    "type": "perm",
     "filetype": "SMALLFILE",
     "tbsname": "USERS",
     "file_specs": [

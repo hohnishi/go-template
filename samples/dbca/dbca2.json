@@ -242,7 +242,7 @@
     ]
   },
   "pdbTbs": {
-    "type": "user",
+    "type": "perm",
     "filetype": "SMALLFILE",
     "tbsname": "USERS",
     "file_specs": [

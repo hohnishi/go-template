@@ -4,7 +4,7 @@
 create_tablespace::=
   CREATE [ BIGFILE | SMALLFILE ]     # filetype
                                      # type is
-    {   permanent_tablespace_clause  #   "perm" or "user"
+    {   permanent_tablespace_clause  #   "perm"
       | temporary_tablespace_clause  #   "temp"
       | undo_tablespace_clause       #   "undo"
     } ;
@@ -12,7 +12,7 @@ create_tablespace::=
 */ -}}
 {{define "create_tablespace" -}}
 CREATE {{with .filetype}}{{.}} {{end -}}
-  {{if or (eq .type "perm") (eq .type "user") -}}
+  {{if eq .type "perm" -}}
     {{template "permanent_tablespace_clause" . -}}
   {{else if eq .type "temp" -}}
     {{template "temporary_tablespace_clause" . -}}
