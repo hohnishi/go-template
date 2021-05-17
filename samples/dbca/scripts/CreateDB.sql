@@ -1,4 +1,3 @@
-
 SET VERIFY OFF
 connect "SYS"/"&&sysPassword" as SYSDBA
 set echo on
@@ -13,7 +12,6 @@ CREATE DATABASE "orcl"
   CHARACTER SET AL32UTF8
   NATIONAL CHARACTER SET AL16UTF16
   SET DEFAULT SMALLFILE TABLESPACE
-
   LOGFILE
     GROUP 1 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log' ) SIZE 200M BLOCKSIZE 16K REUSE,
     GROUP 2 ( 'C:\app\Administrator\oradata\ORCL\redo01.log', 'C:\app\Administrator\oradata\ORCL\redo02.log', 'C:\app\Administrator\oradata\ORCL\redo03.log' ) SIZE 200M BLOCKSIZE 16K REUSE,
@@ -24,7 +22,6 @@ CREATE DATABASE "orcl"
   ARCHIVELOG
   FORCE LOGGING
   SET STANDBY NOLOGGING FOR DATA AVAILABILITY
-
   EXTENT MANAGEMENT LOCAL
   DATAFILE
     'C:\app\Administrator\oradata\ORCL\system01.dbf' SIZE 700M REUSE AUTOEXTEND ON NEXT 10240K MAXSIZE UNLIMITED,
@@ -45,14 +42,11 @@ CREATE DATABASE "orcl"
     DATAFILE
       'C:\app\Administrator\oradata\ORCL\undotbs01.dbf' SIZE 200M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED,
       'C:\app\Administrator\oradata\ORCL\undotbs02.dbf' SIZE 200M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED
-
   SET TIME_ZONE = 'Asia/Tokyo'
-
   SMALLFILE USER_DATA TABLESPACE USERDATA
     DATAFILE
       'C:\app\Administrator\oradata\ORCL\user01.dbf' SIZE 200M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED,
       'C:\app\Administrator\oradata\ORCL\user02.dbf' SIZE 200M REUSE AUTOEXTEND ON NEXT 5120K MAXSIZE UNLIMITED
-
   ENABLE PLUGGABLE DATABASE
   SEED
     FILE_NAME_CONVERT = (
@@ -63,5 +57,4 @@ CREATE DATABASE "orcl"
     SYSAUX DATAFILES SIZE 5M AUTOEXTEND ON NEXT 1280K MAXSIZE UNLIMITED
   LOCAL UNDO ON
 ;
-
 spool off

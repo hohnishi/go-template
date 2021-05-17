@@ -39,7 +39,7 @@ ${LIBDIR}/CREATE_DATABASE.tmpl \
 
 for f in ${files}; do
     echo $f;
-    ${GOTEMPLATE} -j "$param" "${TMPLDIR}/${f}" $templates > "${DESTDIR}/${f}"
+    ${GOTEMPLATE} -j "$param" "${TMPLDIR}/${f}" $templates | awk NF > "${DESTDIR}/${f}"
 done
 
 diff -ur ${ORIGDIR} ${DESTDIR}

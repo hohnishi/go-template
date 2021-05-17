@@ -6,16 +6,6 @@ spool C:\app\Administrator\admin\orcl\scripts\postPDBCreation.log append
 CREATE SMALLFILE TABLESPACE "USERS"
   DATAFILE
     'C:\app\Administrator\oradata\ORCL\PLGDB\users01.dbf' SIZE 5M AUTOEXTEND ON NEXT 1280K MAXSIZE UNLIMITED
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 ;
 ALTER DATABASE DEFAULT TABLESPACE "USERS";
 host C:\app\Administrator\product\19.0.0\dbhome_1\OPatch\datapatch.bat -skip_upgrade_check -db orcl -pdbs PLGDB;
