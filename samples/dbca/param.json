@@ -1,4 +1,16 @@
 {
+  "_": "common setting",
+  "ps": "\\",
+  "ORACLE_BASE": "C:\\app\\Administrator",
+  "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
+  "SID": "orcl",
+  "SID_U": "ORCL",
+  "DB_BASE": "C:\\app\\Administrator\\oradata\\ORCL",
+  "SEED_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\pdbseed",
+  "PDB_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB",
+  "PDB_NAME": "PLGDB",
+  "SCRIPT_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
+  "LOG_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
   "_": "CREATE_DATABASE.tmpl",
   "database": "orcl",
   "sys_password": "manager",
@@ -315,18 +327,24 @@
       "shardspace": "ssname"
     }
   ],
-  "_": "_",
-  "ps": "\\",
-  "ORACLE_BASE": "C:\\app\\Administrator",
-  "ORACLE_HOME": "C:\\app\\Administrator\\product\\19.0.0\\dbhome_1",
-  "SID": "orcl",
-  "SID_U": "ORCL",
-  "DB_BASE": "C:\\app\\Administrator\\oradata\\ORCL",
-  "SEED_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\pdbseed",
-  "PDB_BASE": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB",
-  "PDB_NAME": "PLGDB",
-  "SCRIPT_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
-  "LOG_DIR": "C:\\app\\Administrator\\admin\\orcl\\scripts",
+  "_": "postPDBCreation_pdb.sql",
+  "pdbTbs": {
+    "type": "perm",
+    "filetype": "SMALLFILE",
+    "tbsname": "USERS",
+    "file_specs": [
+      {
+        "path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
+        "size": "5M",
+        "autoextend": {
+          "mode": "ON",
+          "next": "1280K",
+          "maxsize": "UNLIMITED"
+        }
+      }
+    ]
+  },
+  "_": "init.ora",
   "dbpara": [
     [
       "nls_language",
@@ -396,57 +414,5 @@
       "dispatchers",
       "\"(PROTOCOL=TCP) (SERVICE=orclXDB)\""
     ]
-  ],
-  "ctrl_files": {
-    "ctrl1": "C:\\app\\Administrator\\oradata\\ORCL\\control01.ctl",
-    "ctrl2": "C:\\app\\Administrator\\oradata\\ORCL\\control02.ctl"
-  },
-  "tbs": {
-    "type": "perm",
-    "filetype": "SMALLFILE",
-    "tbsname": "USERS",
-    "uniformsize": "1M",
-    "blocksize": "16K",
-    "segmentSpaceMgt": "AUTO",
-    "tablespace_encryption": {
-      "mode": "ENCRYPT",
-      "algorithm": ""
-    },
-    "file_specs": [
-      {
-        "path": "C:\\app\\Administrator\\oradata\\ORCL\\users01.dbf",
-        "size": "5M",
-        "reuse": true,
-        "autoextend": {
-          "mode": "ON",
-          "next": "1280K",
-          "maxsize": "UNLIMITED"
-        }
-      },
-      {
-        "path": "C:\\app\\Administrator\\oradata\\ORCL\\users02.dbf",
-        "size": "5M",
-        "reuse": true,
-        "autoextend": {
-          "mode": "OFF"
-        }
-      }
-    ]
-  },
-  "pdbTbs": {
-    "type": "perm",
-    "filetype": "SMALLFILE",
-    "tbsname": "USERS",
-    "file_specs": [
-      {
-        "path": "C:\\app\\Administrator\\oradata\\ORCL\\PLGDB\\users01.dbf",
-        "size": "5M",
-        "autoextend": {
-          "mode": "ON",
-          "next": "1280K",
-          "maxsize": "UNLIMITED"
-        }
-      }
-    ]
-  }
+  ]
 }
