@@ -2,40 +2,25 @@
 # based on 19c
 ================================================
 create_tablespace::=
-  CREATE [ BIGFILE | SMALLFILE ]     # filetype
-                                     # type is
-    {   permanent_tablespace_clause  #   "perm"
-      | temporary_tablespace_clause  #   "temp"
-      | undo_tablespace_clause       #   "undo"
+  CREATE [ BIGFILE | SMALLFILE ]
+    {   permanent_tablespace_clause
+      | temporary_tablespace_clause
+      | undo_tablespace_clause
     } ;
-------------------------------------------------
-*/ -}}
-{{define "create_tablespace" -}}
-CREATE {{with .filetype}}{{.}} {{end -}}
-  {{if eq .type "perm" -}}
-    {{template "permanent_tablespace_clause" . -}}
-  {{else if eq .type "temp" -}}
-    {{template "temporary_tablespace_clause" . -}}
-  {{else if eq .type "undo" -}}
-    {{template "undo_tablespace_clause" . -}}
-  {{end -}}
-;
-{{end -}}
-{{/*
-================================================
+
 permanent_tablespace_clause::= 
-  TABLESPACE tablespace             # tbsname
-  [ DATAFILE file_specification(=datafile_tempfile_spec) [, file_specification(=datafile_tempfile_spec) ]... ] # file_specs
+  TABLESPACE tablespace
+  [ DATAFILE file_specification(=datafile_tempfile_spec) [, file_specification(=datafile_tempfile_spec) ]... ]
   [ permanent_tablespace_attrs ]
-  [ IN SHARDSPACE shardspace ]      # shardspace
+  [ IN SHARDSPACE shardspace ]
 
 permanent_tablespace_attrs::=
-  {   MINIMUM EXTENT size_clause    # minimum_extent_size
-    | BLOCKSIZE integer [ K ]       # blocksize
-    | logging_clause                # logging is nil | LOGGING | NOLOGGING | FILESYSTEM_LIKE_LOGGING
-    | FORCE LOGGING                 # force_logging
+  {   MINIMUM EXTENT size_clause
+    | BLOCKSIZE integer [ K ]
+    | logging_clause
+    | FORCE LOGGING
     | tablespace_encryption_clause
-    | default_tablespace_params     # no support yet
+    | default_tablespace_params     # not support yet
     | { ONLINE | OFFLINE }
     | extent_management_clause
     | segment_management_clause
@@ -51,14 +36,64 @@ tablespace_encryption_clause::=
 
 tablespace_encryption_spec::=
   USING 'encrypt_algorithm'             # encryption.algorithm:  AES256, AES192, AES128, 3DES168
+
+segment_management_clause::=
+  SEGMENT SPACE MANAGEMENT { AUTO | MANUAL }
+
+flashback_mode_clause::=
+  FLASHBACK { ON | OFF }
+  
+lost_write_protection::=
+  [ { ENABLE | DISABLE | REMOVE | SUSPEND } ] LOST WRITE PROTECTION
 ------------------------------------------------
+{
+  "type": "perm"
+  "filetype": "SMALLFILE" | "BIGFILE",
+  "tbsname": "TBSNAME",
+  "file_specs": [ {datafile_tempfile_spec},... ]
+  "minimum_extent_size": "8K",  #K only
+  "blocksize": "16K",
+  "logging": nil | "LOGGING" | "NOLOGGING" | "FILESYSTEM_LIKE_LOGGING",
+  "force_logging": true,
+  "tablespace_encryption": {
+    "mode": nil | "ENCRYPT" | "DECRYPT",
+    "algorithm": "AES256" | "AES192" | "AES128" | "3DES168"
+  },
+#  "default_tablespace_params":   # not support yet
+  "on_offline": nil | "ONLINE" | "OFFLINE",
+  "extent_management": {
+    "uniformsize": "1M"
+  },
+  "segment_management": {
+    "mode": "AUTO" | "MANUAL"
+  },
+  "flashback_mode": {
+    "mode": "ON" | "OFF"
+  },
+  "lost_write_protection": {
+    "mode": "ENABLE" | "DISABLE" | "REMOVE" | "SUSPEND"
+  },
+  "shardspace": "ssname"
+}
 */ -}}
+{{define "create_tablespace" -}}
+CREATE {{with .filetype}}{{.}} {{end -}}
+  {{if eq .type "perm" -}}
+    {{template "permanent_tablespace_clause" . -}}
+  {{else if eq .type "temp" -}}
+    {{template "temporary_tablespace_clause" . -}}
+  {{else if eq .type "undo" -}}
+    {{template "undo_tablespace_clause" . -}}
+  {{end -}}
+;
+{{end -}}
+
 {{define "permanent_tablespace_clause" -}}
 TABLESPACE "{{.tbsname}}"
   {{with .file_specs}}DATAFILE{{println ""}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}}    {{template "datafile_tempfile_spec" .}}{{end}}{{end}}
   {{with .minimum_extent_size}}MINIMUM EXTENT {{.}}{{end}}
   {{with .blocksize}}BLOCKSIZE {{.}}{{end}}
-  {{with .logging}}{{template "logging_clause" . }}{{end}}
+  {{with .logging}}{{.}}{{end}}
   {{with .force_logging}}FORCE LOGGING{{end}}
   {{with .tablespace_encryption}}{{template "tablespace_encryption_clause" . }}{{end}}
   {{- /* with .default_tablespace_params}}{{template "default_tablespace_params" . }}{{end */ -}}
@@ -70,11 +105,21 @@ TABLESPACE "{{.tbsname}}"
   {{with .shardspace}}IN SHARDSPACE {{.}}{{end}}
 {{end}}
 
-{{define "logging_clause"}}{{.}}{{end}}
-
 {{define "tablespace_encryption_clause" -}}
 ENCRYPTION{{if eq .mode "ENCRYPT"}}{{with .algorithm}} USING '{{.}}'{{end}} ENCRYPT{{else}} DECRYPT{{end}}
 {{end}}
+
+{{define "segment_management_clause" -}}
+SEGMENT SPACE MANAGEMENT {{.mode}}
+{{- end -}}
+
+{{define "flashback_mode_clause" -}}
+FLASHBACK {{.mode}}
+{{- end -}}
+
+{{define "lost_write_protection" -}}
+{{.mode}} LOST WRITE PROTECTION
+{{- end -}}
 
 {{define "default_tablespace_params" -}}
 {{- /* TBD: "default_tablespace_params" */ -}}
@@ -93,6 +138,17 @@ temporary_tablespace_clause::=
 tablespace_group_clause::=
   TABLESPACE GROUP { tablespace_group_name | '' }
 ------------------------------------------------
+{
+  "type": "temp"
+  "filetype": "SMALLFILE" | "BIGFILE",
+  "tbsname": "TBSNAME",
+  "file_specs": [ {datafile_tempfile_spec},... ]
+
+
+  "extent_management": {
+    "uniformsize": "1M"
+  }
+}
 */ -}}
 {{define "temporary_tablespace_clause" -}}
 TEMPORARY TABLESPACE "{{.tbsname}}"
@@ -116,6 +172,16 @@ undo_tablespace_clause::=
 tablespace_retention_clause::=
   RETENTION { GUARANTEE | NOGUARANTEE }
 ------------------------------------------------
+{
+  "type": "undo",
+  "filetype": "SMALLFILE" | "BIGFILE",
+  "tbsname": "TBSNAME",
+  "file_specs": [ {datafile_tempfile_spec},... ]
+
+
+  "extent_management": {
+    "uniformsize": "1M"
+  }
 */ -}}
 {{define "undo_tablespace_clause" -}}
 UNDO TABLESPACE "{{.tbsname}}"
@@ -127,36 +193,4 @@ UNDO TABLESPACE "{{.tbsname}}"
 
 {{define "tablespace_retention_clause" -}}
 RETENTION {{.}}
-{{- end -}}
-{{/*
-================================================
-segment_management_clause::=
-  SEGMENT SPACE MANAGEMENT { AUTO | MANUAL }
-------------------------------------------------
-  "segment_management" : { "mode" : "AUTO"|"MANUAL" }  # OPTION
-*/ -}}
-{{define "segment_management_clause" -}}
-SEGMENT SPACE MANAGEMENT {{.mode}}
-{{- end -}}
-
-{{/*
-================================================
-flashback_mode_clause::=
-  FLASHBACK { ON | OFF }
-------------------------------------------------
-  "flashback_mode" : { "mode" : "ON"|"OFF" }  # OPTION
-*/ -}}
-{{define "flashback_mode_clause" -}}
-FLASHBACK {{.mode}}
-{{- end -}}
-
-{{/*
-================================================
-lost_write_protection::=
-  [ { ENABLE | DISABLE | REMOVE | SUSPEND } ] LOST WRITE PROTECTION
-------------------------------------------------
-  "lost_write_protection" : { "mode" : "ENABLE"|"DISABLE"|"REMOVE"|"SUSPEND" }    # OPTION
-*/ -}}
-{{define "lost_write_protection" -}}
-{{.mode}} LOST WRITE PROTECTION
 {{- end -}}
