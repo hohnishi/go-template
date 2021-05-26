@@ -1,0 +1,107 @@
+{{/*
+# based on 19c
+================================================
+create_pluggable_database::=
+CREATE PLUGGABLE DATABASE
+  {   {   pdb_name [ AS APPLICATION CONTAINER ]
+        | using_snapshot_clause     # not support yet
+      }
+    | { AS SEED }                   # not support yet
+  }
+  {   create_pdb_from_seed
+    | create_pdb_clone              # not support yet
+    | create_pdb_from_xml           # not support yet
+    | create_pdb_from_mirror_copy   # not support yet
+    | container_map_clause          # not support yet
+    | pdb_snapshot_clause           # not support yet
+  };
+
+create_pdb_from_seed::=
+ADMIN USER admin_user_name IDENTIFIED BY password
+  [ pdb_dba_roles ]
+  [ parallel_pdb_creation_clause ]
+  [ default_tablespace ]
+  [ pdb_storage_clause ]
+  [ file_name_convert ]
+  [ service_name_convert ]
+  [ path_prefix_clause ]
+  [ tempfile_reuse_clause ]
+  [ user_tablespaces_clause ]
+  [ standbys_clause ]
+  [ logging_clause ]
+  [ create_file_dest_clause ]
+  [ HOST = 'hostname' ]
+  [ PORT = number ]
+
+pdb_dba_roles::=
+ROLES = ( role [, role ]... )
+
+parallel_pdb_creation_clause::=
+PARALLEL [ integer ]
+
+default_tablespace::=
+DEFAULT TABLESPACE tablespace [ DATAFILE datafile_tempfile_spec ] [ extent_management_clause ]
+
+pdb_storage_clause::=
+STORAGE
+  { ( { MAXSIZE { UNLIMITED | size_clause }
+        |
+        MAX_AUDIT_SIZE { UNLIMITED | size_clause }
+        |
+        MAX_DIAG_SIZE { UNLIMITED | size_clause }
+      }...
+    )
+  |
+  UNLIMITED
+  }
+
+#file_name_convert::=
+
+service_name_convert::=
+SERVICE_NAME_CONVERT =
+  { ( 'service_name', 'replacement_service_name'
+      [, 'service_name', 'replacement_service_name' ]... )
+    |
+    NONE
+  }
+
+path_prefix_clause::=
+PATH_PREFIX = { 'path_name' | directory_object_name | NONE }
+
+tempfile_reuse_clause::=
+TEMPFILE REUSE
+
+user_tablespaces_clause::=
+USER_TABLESPACES =
+  { ( 'tablespace' [, 'tablespace' ]... )
+  | ALL [ EXCEPT ( 'tablespace' [, 'tablespace' ]... ) ]
+  | NONE
+  }
+  [ SNAPSHOT COPY | NO DATA | COPY | MOVE | NOCOPY ]
+
+standbys_clause::=
+STANDBYS = { ( 'cdb_name' [, 'cdb_name' ]... )
+           | { ALL [ EXCEPT ( 'cdb_name' [, 'cdb_name' ]... ) ] }
+           | NONE
+           }
+
+logging_clause::=
+{ LOGGING | NOLOGGING |  FILESYSTEM_LIKE_LOGGING }
+
+create_file_dest_clause::=
+CREATE_FILE_DEST = { NONE | 'directory_path_name' | diskgroup_name }
+
+------------------------------------------------
+*/ -}}
+{{define "create_pluggable_database" -}}
+CREATE PLUGGABLE DATABASE {{with .pdb_name}}{{.}}{{with .app_container}} AS APPLICATION CONTAINER{{end}}{{end}}
+  {{template "create_pdb_from_seed"}}
+;
+{{end}}
+
+{{define "create_pdb_from_seed" -}}
+  {{with .roles}}{{range $i, $_ := .}}{{if $i}}{{println ","}}{{end}} {{.}}{{end}}{{end}}
+  {{with .parallel}}PARALLEL {{.}}{{end}}
+  {{with .default_tablespace}}DEFAULT TABLESPACE {{.}} {{with .datafile}}{{template "datafile_tempfile_spec" .}}{{end}} {{with .extent_management}}{{template "extent_management_clause" .}}{{end}}{{end}}
+
+{{end}}
